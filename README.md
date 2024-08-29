@@ -6,10 +6,10 @@
 </p>
 
 <p align="center">
-	<img src="https://img.shields.io/github/license/Eemayas/2nd-sem-Final-Project?style=flat&color=0080ff" alt="license">
-	<img src="https://img.shields.io/github/last-commit/Eemayas/2nd-sem-Final-Project?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/Eemayas/2nd-sem-Final-Project?style=flat&color=0080ff" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/Eemayas/2nd-sem-Final-Project?style=flat&color=0080ff" alt="repo-language-count">
+	<img src="https://img.shields.io/github/license/Eemayas/Car-Race-Game?style=flat&color=0080ff" alt="license">
+	<img src="https://img.shields.io/github/last-commit/Eemayas/Car-Race-Game?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
+	<img src="https://img.shields.io/github/languages/top/Eemayas/Car-Race-Game?style=flat&color=0080ff" alt="repo-top-language">
+	<img src="https://img.shields.io/github/languages/count/Eemayas/Car-Race-Game?style=flat&color=0080ff" alt="repo-language-count">
 <p>
 <p align="center">
 		<em>Developed with the software and tools below.</em>
@@ -150,7 +150,7 @@ Ensure you have the following dependencies installed on your system:
 
 ### Installation
 
-1. Clone the 2nd-sem-Final-Project repository:
+1. Clone the Car-Race-Game repository:
 
 ```sh
 git clone https://github.com/Eemayas/Car-Race-Game.git
@@ -170,9 +170,9 @@ g++  -I src -I src/core -I src/utils src/main.cpp src/core/*.cpp src/utils/*.cpp
 
 ---
 
-### Running 2nd-sem-Final-Project
+### Running Car-Race-Game
 
-Use the following command to run 2nd-sem-Final-Project:
+Use the following command to run Car-Race-Game:
 
 ```sh
 .\car_race_game.exe
@@ -257,9 +257,9 @@ The Car Race Game relies on the following header files:
 
 Contributions are welcome! Here are several ways you can contribute:
 
-- **[Submit Pull Requests](https://github.com/Eemayas/2nd-sem-Final-Project/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
-- **[Join the Discussions](https://github.com/Eemayas/2nd-sem-Final-Project/discussions)**: Share your insights, provide feedback, or ask questions.
-- **[Report Issues](https://github.com/Eemayas/2nd-sem-Final-Project/issues)**: Submit bugs found or log feature requests for 2nd-sem-final-project.
+- **[Submit Pull Requests](https://github.com/Eemayas/Car-Race-Game/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+- **[Join the Discussions](https://github.com/Eemayas/Car-Race-Game/discussions)**: Share your insights, provide feedback, or ask questions.
+- **[Report Issues](https://github.com/Eemayas/Car-Race-Game/issues)**: Submit bugs found or log feature requests for Car-Race-Game.
 
 ### Contributing Guidelines
 
