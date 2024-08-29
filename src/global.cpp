@@ -13,7 +13,7 @@ int enemyY[3] = {0}; // Initializing array for enemy Y coordinates
 
 int flag[3] = {0};                       // Initializing array for checking enemy generation
 int startcarY = HEIGHT - 4;              // Initializing y coordinate for the generated car
-int carposition = (MAIN_SCREEN / 2) - 1; // Initializing x coordinate for the generated car
+int carPosition = (MAIN_SCREEN / 2) - 1; // Initializing x coordinate for the generated car
 int score = 0;                           // Initializing score
 int option = 0;                          // Initializing user’s input option
 int sec_prev = 0;                        // Initializing starting time (seconds)

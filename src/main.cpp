@@ -21,7 +21,7 @@ int main()
     Enemy enemy;
     Screen screen;
     Functionality functionality;
-    screen.menu1(); // calling the function ‘menu1’ from ‘parent’ class
+    screen.nameEntryMenu(); // calling the function ‘menu1’ from ‘parent’ class
 
     system("cls"); // clearing the whole window
 
@@ -29,7 +29,7 @@ int main()
     do
     {
 
-        screen.menu2(); // calling the function ‘menu2’ from’parent’ class
+        screen.displayMenu(); // calling the function ‘menu2’ from’parent’ class
 
         // using switch() according to the passed value
         switch (option)
@@ -59,14 +59,14 @@ int main()
 
             // executing if option is ‘2’
         case 2:
-            screen.instruction(); // calling the function ‘instruction’ from ’parent’ class
+            screen.displayInstructions(); // calling the function ‘instruction’ from ’parent’ class
             std::cin.get();
             std::cin.get();
             break;
 
             // executing if option is ‘3’
         case 3:
-            functionality.leaderboard(); // calling the function ‘leaderboard’’ from ’parent’ class
+            functionality.displayLeaderboard(); // calling the function ‘leaderboard’’ from ’parent’ class
             break;
 
             // executing if option is ‘4’

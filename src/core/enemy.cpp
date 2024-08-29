@@ -3,56 +3,65 @@
 #include "board.h"
 #include <iostream>
 using namespace std;
-/**defining function
- *@brief function to give the x coordinate for generating the enemy car
- *@return void
+
+/**
+ * @brief Generates the x coordinate for generating the enemy car.
+ *
+ * This function generates a random x coordinate within a specified range
+ * for placing the enemy car on the game board.
+ *
+ * @param enemyIndex The index of the enemy car.
  */
-void Enemy::gen_Enemy(int enemy_number)
+void Enemy::genEnemy(int enemyIndex)
 {
     int s = rand();
-    enemyX[enemy_number] = 17 + s % (33); // setting random board.position on the main field
+    enemyX[enemyIndex] = 17 + s % 33; // Set random x coordinate on the game board
 }
 
-/**defining function
- *@brief function to print the enemy car
- *@param flag[enemy_number] variable to check whether to print the next enemy car or not
- *@return void
+/**
+ * @brief Prints the enemy car on the game board.
+ *
+ * This function prints the enemy car on the game board at the specified coordinates.
+ *
+ * @param enemyIndex The index of the enemy car.
  */
-void Enemy::print_Enemy(int enemy_number)
+void Enemy::printEnemy(int enemyIndex)
 {
     Board board;
-    board.color(12);
-    // if the condition is fulfilled then print the enemy
-    if (flag[enemy_number] == 1)
+    board.setTextColor(12);
+
+    if (flag[enemyIndex] == 1)
     {
-        board.position(enemyX[enemy_number], enemyY[enemy_number]);
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex]);
         cout << block3 << "**" << block3;
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 1);
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex] + 1);
         cout << " ** ";
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 2);
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex] + 2);
         cout << block3 << "**" << block3;
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 3);
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex] + 3);
         cout << " " << block2 << block2 << " ";
     }
 }
 
-/**defining function
- *@brief function to erase the printed enemy
- *@return void
+/**
+ * @brief Erases the printed enemy car from the game board.
+ *
+ * This function erases the printed enemy car from the game board at the specified coordinates.
+ *
+ * @param enemyIndex The index of the enemy car.
  */
-
-void Enemy::erase_Enemy(int enemy_number)
+void Enemy::eraseEnemy(int enemyIndex)
 {
     Board board;
-    if (flag[enemy_number] == true)
+    if (flag[enemyIndex] == true)
     {
-        board.position(enemyX[enemy_number], enemyY[enemy_number]);
-        cout << "    "; // x,1
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 1);
-        cout << "    "; // x,2
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 2);
-        cout << "    "; // x,3
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 3);
-        cout << "    "; // x,4
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex]);
+        cout << "    ";
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex] + 1);
+        cout << "    ";
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex] + 2);
+        cout << "    ";
+        board.setCursorPosition(enemyX[enemyIndex], enemyY[enemyIndex] + 3);
+        cout << "    ";
     }
 }

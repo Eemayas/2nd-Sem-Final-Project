@@ -22,7 +22,7 @@ extern int enemyY[3]; // array for storing coordinates of the enemy car
 
 extern int flag[3];		 // array for checking whether to generate enemy or not
 extern int startcarY;	 // initial y coordinate for the generated car
-extern int carposition;	 // initial x coordinate for the generated car
+extern int carPosition;	 // initial x coordinate for the generated car
 extern int score;		 // variable for score
 extern int option;		 // variable for storing user’s input option
 extern int sec_prev;	 // variable for starting time (seconds)

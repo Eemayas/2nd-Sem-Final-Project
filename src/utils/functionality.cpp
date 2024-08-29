@@ -16,287 +16,340 @@ using std::ios;
 using std::ofstream;
 using std::string;
 using std::stringstream;
-/**defining function
- *@brief function to print score
- *@return void
- */
 
+/**
+ * @brief Updates and displays the current score on the main screen.
+ *
+ * This function sets the cursor position to a predefined location on the
+ * main screen, sets the text color, and prints the current score.
+ */
 void Functionality::updateScore()
 {
+    const int cursorX = MAIN_SCREEN + 7;
+    const int cursorY = 5;
+    const int textColor = 10;
+
     Board board;
-    board.position(MAIN_SCREEN + 7, 5);
-    board.color(10);
-    std::cout << "Score: " << score << std::endl; // printing the score
+    board.setCursorPosition(cursorX, cursorY);
+    board.setTextColor(textColor);
+
+    std::cout << "Score: " << score << std::endl; // Display the current score
 }
 
-/**defining function
- *@brief function to check whether the cars collide or not
- *@param x integer data type containing value of 1 or 0
- *@return true if collision happens, otherwise return false
+/**
+ * @brief Checks for a collision between an enemy car and the player's car.
+ *
+ * This function determines if there is a collision based on the position of
+ * the enemy car and the player's car. It returns `true` if a collision is detected,
+ * otherwise `false`.
+ *
+ * @param enemyIndex The index of the enemy car to check for collision.
+ * @return true if a collision occurs, false otherwise.
  */
-
-int Functionality::collision(int enemy_number)
+bool Functionality::checkCollision(int enemyIndex)
 {
-    int x;
-    if (enemyY[enemy_number] + 4 >= HEIGHT - 2)
+    const int collisionThreshold = HEIGHT - 2;
+    const int enemyWidth = 4;
+    const int carWidth = 9;
+
+    // Check if the enemy car is within the collision threshold
+    if (enemyY[enemyIndex] + enemyWidth >= collisionThreshold)
     {
-        if (enemyX[enemy_number] + 4 - carposition >= 0 && enemyX[enemy_number] + 4 - carposition < 9)
+        // Check if the enemy car's x position overlaps with the player's car
+        if (enemyX[enemyIndex] + enemyWidth > carPosition && enemyX[enemyIndex] < carPosition + carWidth)
         {
-            x = 1;
+            return true;
         }
     }
-    return x;
+
+    return false;
 }
 
-/**defining function
- *@brief function to erase the enemy and set the coordinate for new enemy
- *@return 0
+/**
+ * @brief Resets the position of the specified enemy and regenerates its coordinates.
+ *
+ * This function erases the specified enemy from its current position and sets
+ * a new position for the enemy by updating its coordinates. The enemy is then
+ * regenerated at the new position.
+ *
+ * @param enemyIndex The index of the enemy to reset.
  */
-
-void Functionality::reset(int enemy_number)
+void Functionality::resetEnemy(int enemyIndex)
 {
     Enemy enemy;
-    enemy.erase_Enemy(enemy_number); // erases the enemy
-    enemyY[enemy_number] = 1;        // coordinate of new enemy of y axis
-    enemy.gen_Enemy(enemy_number);   // generates the enemy coordinate
+
+    enemy.eraseEnemy(enemyIndex); // Remove the enemy from the screen
+    enemyY[enemyIndex] = 1;       // Reset the enemy's Y-coordinate to the initial position
+    enemy.genEnemy(enemyIndex);   // Generate new coordinates for the enemy
 }
 
-/**defining function
- *@brief function to move the enemy car downwards
- *@param sleep integer data type to set the speed of enemy car
- *@param q integer data type to increase the score according to the level
- *@return void
+/**
+ * @brief Moves the enemy cars downwards and handles user input for car movement.
+ *
+ * This function moves the enemy cars down the screen based on the provided speed.
+ * It also processes user input to move the player's car left or right and updates
+ * the score when an enemy reaches the bottom of the screen.
+ *
+ * @param enemyIndex The index of the enemy car to move.
+ * @param sleep Duration in milliseconds to control the speed of the enemy movement.
+ * @param scoreIncrement The amount to increase the score when an enemy reaches the bottom.
  */
-
-void Functionality::downward(int enemy_number, int sleep, int q)
+void Functionality::moveEnemiesDown(int enemyIndex, int sleep, int scoreIncrement)
 {
     Enemy enemy;
     Player player;
-    enemy.print_Enemy(enemy_number);     // print the first enemy
-    enemy.print_Enemy(enemy_number + 1); // print the second enemy
-    Sleep(sleep);                        // sets the speed for the enemy
-    enemy.erase_Enemy(enemy_number);     // erase the first enemy
-    enemy.erase_Enemy(enemy_number + 1); // erase the second enemy
 
-    // checking the condition for appearance of second enemy
-    if (enemyY[1] == 13)
+    // Display the enemies
+    enemy.printEnemy(enemyIndex);
+    enemy.printEnemy(enemyIndex + 1);
+
+    Sleep(sleep); // Control the speed of enemy movement
+
+    // Erase the enemies from their current positions
+    enemy.eraseEnemy(enemyIndex);
+    enemy.eraseEnemy(enemyIndex + 1);
+
+    // Check and update the flag for the second enemy's appearance
+    if (enemyY[1] == 13 && flag[2] == 0)
     {
-        if (flag[2] == 0)
+        flag[2] = 1;
+    }
+
+    // Move enemies downwards if their flags are set
+    if (flag[enemyIndex] == 1)
+    {
+        enemyY[enemyIndex] += 1;
+    }
+    if (flag[enemyIndex + 1] == 1)
+    {
+        enemyY[enemyIndex + 1] += 1;
+    }
+
+    // Process user input for car movement
+    if (kbhit())
+    {
+        char userInput = getch();
+        if (userInput == 'a' || userInput == 'A' || userInput == 75) // Move left
         {
-            flag[2] = 1;
-        }
-    }
-
-    // moving the enemy downwards
-    if (flag[enemy_number] == 1)
-    {
-        enemyY[enemy_number] += 1;
-    }
-    if (flag[enemy_number + 1] == 1)
-    {
-        enemyY[enemy_number + 1] += 1;
-    }
-
-    // moving the car left or right as the user wants
-    if (kbhit() == 1)
-    {
-        // taking the input from the user
-        char ch = getch();
-        // char ch=cin.get();
-        // Moving the car towards the left
-        if (ch == 'a' || ch == 'A' || ch == 75)
-        {
-            if (carposition > 19)
+            if (carPosition > 19)
             {
-                player.erase_Car();
-                carposition -= 4;
-                player.print_Car();
+                player.eraseCar();
+                carPosition -= 4;
+                player.printCar();
             }
         }
-        // Moving the car towards the right
-        if (ch == 'd' || ch == 'D' || ch == 77)
+        else if (userInput == 'd' || userInput == 'D' || userInput == 77) // Move right
         {
-            if (carposition < 50)
+            if (carPosition < 50)
             {
-                player.erase_Car();
-                carposition += 4;
-                player.print_Car();
+                player.eraseCar();
+                carPosition += 4;
+                player.printCar();
             }
         }
     }
 
-    // checking the condition if the enemy has reached the bottom or not
-    if (enemyY[enemy_number] > HEIGHT - 4)
+    // Check if enemies have reached the bottom and update score
+    if (enemyY[enemyIndex] > HEIGHT - 4)
     {
-        reset(enemy_number); // calling reset() function
-        score = score + q;   // increasing the score
-        // Beep(1000,10);
-        updateScore(); // calling
+        resetEnemy(enemyIndex);
+        score += scoreIncrement;
+        updateScore();
     }
 
-    if (enemyY[enemy_number + 1] > HEIGHT - 4)
+    if (enemyY[enemyIndex + 1] > HEIGHT - 4)
     {
-        reset(enemy_number + 1);
-        score = score + q;
-        // Beep(1000,10);
+        resetEnemy(enemyIndex + 1);
+        score += scoreIncrement;
         updateScore();
     }
 }
 
-/**defining function
- *@brief function to print highest score using file handling in excel
- *@param testname string to name
- *@param testtime string to store the played time
- *@return void
+/**
+ * @brief Updates the leaderboard by recording the highest scores and their corresponding details.
+ *
+ * This function reads the current leaderboard from a CSV file, updates it with new score data,
+ * and writes the updated leaderboard back to the file. It maintains only the top three scores.
+ *
+ * @param newName The name associated with the new score.
+ * @param newTime The time associated with the new score, converted to a string.
+ * @param newScore The new score to be added to the leaderboard.
  */
-
-void Functionality::calculate_highest()
+void Functionality::updateLeaderboard()
 {
-    string testname = Name;
-    string testtime = std::to_string(diff); // to_string changes the integer to string type
-    ifstream file;
-    file.open("highest.csv", std::ios::app); // opening the file
-    string s;
-    // checking if file is open or not
-    if (file.is_open())
+    const std::string fileName = "highest.csv";
+    const int maxEntries = 3;
+
+    // Prepare new score data
+    std::string newName = Name;
+    std::string newTime = std::to_string(diff);
+    int newScore = testscore;
+
+    std::ifstream file(fileName, std::ios::in);
+    if (!file.is_open())
     {
-        // getting the data from the excel
-        for (int i = 0; i <= 3; i++)
-        {
-            getline(file, a[i].name, ',');
-            getline(file, s, ',');
-            getline(file, a[i].time);
-            std::stringstream qw(s);
-            qw >> a[i].score;
-        }
+        std::cerr << "Error opening file for reading." << std::endl;
+        return;
     }
 
-    else
+    // Read existing leaderboard data
+    struct LeaderboardEntry
     {
-        std::cout << "Error"; // if not opened
-    }
-    int i = 0;
+        std::string name;
+        int score;
+        std::string time;
+    };
 
-    // while loop to sort the leaderboard for the first three highest scorers in excel
-    while (i < 3)
+    LeaderboardEntry leaderboard[maxEntries];
+    std::string line;
+    int index = 0;
+    while (index < maxEntries && std::getline(file, line))
     {
-        if (a[i].score < testscore)
-        {
-
-            a[i + 2].score = a[i + 1].score;
-            a[i + 2].name = a[i + 1].name;
-            a[i + 2].time = a[i + 1].time;
-
-            a[i + 1].score = a[i].score;
-            a[i + 1].name = a[i].name;
-            a[i + 1].time = a[i].time;
-
-            a[i].score = testscore;
-            a[i].name = testname;
-            a[i].time = testtime;
-
-            // std::cout<<i<<std::endl;
-            break;
-        }
-        else
-        {
-            i++;
-        }
+        std::stringstream ss(line);
+        std::getline(ss, leaderboard[index].name, ',');
+        std::getline(ss, line, ',');
+        ss.clear();
+        ss.str(line);
+        ss >> leaderboard[index].score;
+        std::getline(ss, leaderboard[index].time);
+        ++index;
     }
     file.close();
-    // for (int i = 0; i < 3; i++) {
-    //    std::cout << "Name :      " << a[i].name << std::endl;
-    //
-    // std::cout<< "Nick :   " << a[i].score << std::endl;}
 
-    // clearing the previous old file and opening a new file
-    fout1.open("highest.csv", ios::trunc);
-    // putting the data in excel
-    for (int i = 0; i < 3; i++)
+    // Insert new score into the leaderboard
+    index = 0;
+    while (index < maxEntries && leaderboard[index].score >= newScore)
     {
-        fout1 << a[i].name << ",";
-        fout1 << a[i].score << ",";
-        fout1 << a[i].time << std::endl;
+        ++index;
     }
-    fout1.close(); // closes the file
-}
 
-/**defining function
- *@brief function to print the leaderboard page
- *@return void
- */
-
-void Functionality::leaderboard()
-{
-    Board board;
-    system("Color 0A"); // changes the text board.color to green
-    // printing the text in board.center if the terminal
-    string text1 = "----------------------------";
-    board.position(board.center(text1), 4);
-    std::cout << text1;
-    text1 = "|        Leaderboard        |";
-    board.position(board.center(text1), 5);
-    std::cout << text1;
-    text1 = "----------------------------";
-    board.position(board.center(text1), 6);
-    std::cout << text1;
-    ifstream file1;
-    file1.open("highest.csv", ios::app); // opening the file
-    string s1;
-    if (file1.is_open())
+    if (index < maxEntries)
     {
-        // getting the data from the excel and saving it into the structure
-        for (int i = 0; i <= 3; i++)
+        for (int i = maxEntries - 1; i > index; --i)
         {
-            getline(file1, b[i].name, ',');
-            getline(file1, s1, ',');
-            getline(file1, b[i].time);
-            std::stringstream qw1(s1);
-            qw1 >> b[i].score;
-
-            board.position((MAIN_SCREEN / 4), 8);
-            std::cout << "S.N.";
-            board.position((2) * (MAIN_SCREEN / 4), 8);
-            std::cout << "NAME";
-            board.position((3) * (MAIN_SCREEN / 4), 8);
-            std::cout << "SCORE";
-            board.position((4) * (MAIN_SCREEN / 4), 8);
-            std::cout << "TIME";
-            // printing the data from the structure
-            for (int i = 0; i < 3; i++)
-            {
-                int j = 1;
-
-                board.position((j) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                std::cout << i + 1;
-                board.position((j + 1) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                std::cout << b[i].name;
-                board.position((j + 2) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                std::cout << b[i].score;
-                board.position((j + 3) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                std::cout << b[i].time << " sec.";
-            }
+            leaderboard[i] = leaderboard[i - 1];
         }
-    }
-    // if file is not openedd
-    else
-    {
-        board.position(MAIN_SCREEN / 2, 7);
-        std::cout << "Error";
+        leaderboard[index].score = newScore;
+        leaderboard[index].name = newName;
+        leaderboard[index].time = newTime;
     }
 
-    // getch
-    std::cin.get();
-    std::cin.get();
+    // Write updated leaderboard back to file
+    std::ofstream fout(fileName, std::ios::trunc);
+    if (!fout.is_open())
+    {
+        std::cerr << "Error opening file for writing." << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < maxEntries; ++i)
+    {
+        fout << leaderboard[i].name << ","
+             << leaderboard[i].score << ","
+             << leaderboard[i].time << std::endl;
+    }
+    fout.close();
 }
 
 /**
-*@define function for the coutdown before the game starts
+ * @brief Displays the leaderboard page with the top scores.
+ *
+ * This function reads the leaderboard data from a CSV file and prints it on the screen.
+ * It displays the top three scores along with the names and times associated with those scores.
+ * The display is centered on the terminal and uses a green text color.
+ *
+ * @return void
+ */
+void Functionality::displayLeaderboard()
+{
+    Board board;
+    const int headerRow = 4;
+    const int columnWidth = MAIN_SCREEN / 4;
+    const int numberOfEntries = 3;
 
+    system("Color 0A"); // Set text color to green
 
-*@return void
-*/
-void Functionality::countdown()
+    // Print the leaderboard header
+    std::string headerLine = "----------------------------";
+    board.setCursorPosition(board.calculateCenterOffset(headerLine), headerRow);
+    std::cout << headerLine;
+
+    std::string headerTitle = "|        Leaderboard        |";
+    board.setCursorPosition(board.calculateCenterOffset(headerTitle), headerRow + 1);
+    std::cout << headerTitle;
+
+    board.setCursorPosition(board.calculateCenterOffset(headerLine), headerRow + 2);
+    std::cout << headerLine;
+
+    std::ifstream file("highest.csv", std::ios::in);
+    if (!file.is_open())
+    {
+        board.setCursorPosition(MAIN_SCREEN / 2, headerRow + 3);
+        std::cout << "Error opening leaderboard file.";
+        return;
+    }
+
+    // Print the column headers
+    board.setCursorPosition(columnWidth, headerRow + 4);
+    std::cout << "S.N.";
+    board.setCursorPosition(2 * columnWidth, headerRow + 4);
+    std::cout << "NAME";
+    board.setCursorPosition(3 * columnWidth, headerRow + 4);
+    std::cout << "SCORE";
+    board.setCursorPosition(4 * columnWidth, headerRow + 4);
+    std::cout << "TIME";
+
+    // Read and display the leaderboard entries
+    struct LeaderboardEntry
+    {
+        std::string name;
+        int score;
+        std::string time;
+    };
+
+    LeaderboardEntry entries[numberOfEntries];
+    std::string scoreStr;
+    int entryIndex = 0;
+
+    while (entryIndex < numberOfEntries && std::getline(file, entries[entryIndex].name, ','))
+    {
+        std::getline(file, scoreStr, ',');
+        std::getline(file, entries[entryIndex].time);
+        std::stringstream scoreStream(scoreStr);
+        scoreStream >> entries[entryIndex].score;
+        ++entryIndex;
+    }
+    file.close();
+
+    // Print the leaderboard entries
+    for (int i = 0; i < numberOfEntries; ++i)
+    {
+        int rowOffset = headerRow + 5 + (3 * i);
+        board.setCursorPosition(columnWidth, rowOffset);
+        std::cout << i + 1;
+        board.setCursorPosition(2 * columnWidth, rowOffset);
+        std::cout << entries[i].name;
+        board.setCursorPosition(3 * columnWidth, rowOffset);
+        std::cout << entries[i].score;
+        board.setCursorPosition(4 * columnWidth, rowOffset);
+        std::cout << entries[i].time << " sec.";
+    }
+
+    // Wait for user input before closing
+    std::cin.get();
+    std::cin.get();
+}
+
+// TODO: refracting
+/**
+ * @brief Displays a countdown from 3 to 1 before the game starts.
+ *
+ * This function displays the numbers 3, 2, and 1 in sequence, each for a short duration.
+ * The numbers are centered on the screen and are erased after being displayed.
+ *
+ * @return void
+ */
+void Functionality::displayCountdown()
 {
     Board board;
     // using two for loops; one for the appearance of the number and another to erase for each of the three numbers
@@ -304,8 +357,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the board.position() function
-            std::cout << one[j][i];                                      // prints '1'
+            board.setCursorPosition(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the board.position() function
+            std::cout << one[j][i];                                               // prints '1'
         }
     }
     Sleep(1);
@@ -313,7 +366,7 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            board.setCursorPosition(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
             std::cout << " "; // erases '1'
         }
     }
@@ -322,8 +375,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the board.position() function
-            std::cout << two[j][i];                                      // prints '2'
+            board.setCursorPosition(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the board.position() function
+            std::cout << two[j][i];                                               // prints '2'
         }
     }
     Sleep(1);
@@ -331,7 +384,7 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            board.setCursorPosition(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
             std::cout << " "; // erases '2'
         }
     }
@@ -340,7 +393,7 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 7; i++)
         {
-            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            board.setCursorPosition(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
             std::cout << three[j][i]; // prints '3'
         }
     }
@@ -349,79 +402,86 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 7; i++)
         {
-            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            board.setCursorPosition(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
             std::cout << " "; // erses '3'
         }
     }
 }
 
 /**
- *@define function to play the actual game
- *@param x integer to set the speed as required
- *@param s integer for the added scores in different levels
- *@param z integer
+ * @brief Function to play the actual game.
+ *
+ * This function manages the game loop, including initializing the game state,
+ * handling enemy movements, checking for collisions, and updating scores.
+ * It also manages game speed based on the player's score and handles game over
+ * scenarios by updating the leaderboard and saving the score.
+ *
+ * @param initialSpeed Integer to set the initial speed of the enemies.
+ * @param scoreIncrement Integer representing the score increment for different levels.
+ * @param speedFactor Integer used to adjust the speed of enemies.
+ * @return void
  */
-void Functionality::play(int x, int s, int z)
+void Functionality::play(int initialSpeed, int scoreIncrement, int speedFactor)
 {
     Board board;
     Player player;
     Enemy enemy;
     Screen screen;
-    board.draw_Border();       // calling function to draw border
-    updateScore();             // calling function to update score
-    board.side_Instruction();  // calling function to print side instruction
-    enemyY[1] = enemyY[2] = 0; // initializing the y coordinate of two enemy
-    player.print_Car();        // calling function to print car
-    flag[1] = 1;
+
+    // Initialize game state
+    board.drawBorder();              // Draw the game border
+    updateScore();                   // Display the current score
+    board.displaySideInstructions(); // Show instructions on the side
+    enemyY[1] = enemyY[2] = 0;       // Initialize enemy Y-coordinates
+    player.printCar();               // Display the player's car
+    flag[1] = 1;                     // Set flags for enemies
     flag[2] = 0;
-    enemy.gen_Enemy(1);     // calling function to generate first enemy
-    enemy.gen_Enemy(2);     // calling function to generate second enemy
-    time_t start = time(0); // variable for saving starting time
-    start_time = board.timme();
+    enemy.genEnemy(1); // Generate the first enemy
+    enemy.genEnemy(2); // Generate the second enemy
 
-    static int a = x;
+    time_t startTime = time(0);          // Record the start time
+    start_time = board.getCurrentTime(); // Initialize current time
+
+    static int currentSpeed = initialSpeed;
     Sleep(1);
-    countdown(); // calling function to start countdown
-    while (1)
+    displayCountdown(); // Display countdown before the game starts
+
+    while (true)
     {
-        board.print_Clock(); // calling function to  print the digital clock
+        board.printClock(); // Print the current game time
 
-        speed = x;
-
-        // using for loop for the condition to speed up
-        // execute if score is less than 5
+        // Adjust enemy speed based on the score
         if (score <= 10)
         {
-            downward(1, speed, s); // calling function to move enemy downwards
+            moveEnemiesDown(1, currentSpeed, scoreIncrement); // Move enemies at initial speed
         }
-        // execute if score is greater than 10, less than 50
-        if (score > 10 && score <= 50)
+        else if (score > 10 && score <= 50)
         {
-            downward(1, speed - (20 / z), s);
+            moveEnemiesDown(1, currentSpeed - (20 / speedFactor), scoreIncrement); // Increase speed
         }
-        // execute if score is greater than 50, less than 100
-        if (score > 50 && score <= 100)
+        else if (score > 50 && score <= 100)
         {
-            downward(1, speed - (40 / z), s);
+            moveEnemiesDown(1, currentSpeed - (40 / speedFactor), scoreIncrement); // Further increase speed
         }
-        A++;
-        int c = collision(1); // assigning the value to check the collision
-        if (collision(1) == 1 || collision(2) == 1)
-        {
-            system("cls"); // clears the whole window
-            time_t end = time(0);
-            diff = end - start; // calculating the total played time
-            testscore = score;
 
-            // opening the file named ‘sample14’
-            fout.open("sample14.csv", std::ios::app);
-            fout << Name << ",";        // saving the name in a cell of excel
-            fout << score << std::endl; // saves start time and end time in two corresponding cells
-            fout.close();               // closes the opened file
-            screen.game_Over();         // calling the function game_Over
-            calculate_highest();        // calling calculate_highest() function from parent class
-            score = 0;                  // re-initializing the value of ‘score’ as 0
-            break;
+        int collisionStatus = checkCollision(1); // Check for collision with the first enemy
+        if (checkCollision(1) || checkCollision(2))
+        {
+            system("cls");              // Clear the screen
+            time_t endTime = time(0);   // Record the end time
+            diff = endTime - startTime; // Calculate the duration of the game
+            testscore = score;          // Store the score for saving
+
+            // Save the score to a file
+            fout.open("Leaderboard.csv", std::ios::app);
+            fout << Name << ",";        // Save the player's name
+            fout << score << std::endl; // Save the score
+            fout.close();               // Close the file
+
+            screen.gameOver();   // Display the game over screen
+            updateLeaderboard(); // Update the leaderboard
+            score = 0;           // Reset the score
+            break;               // Exit the game loop
         }
     }
 }
