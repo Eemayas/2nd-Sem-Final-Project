@@ -20,7 +20,7 @@ public:
 
     char *timme();
 
-    void print_Clock(int a);
+    void print_Clock();
 
     void draw_Border();
 
