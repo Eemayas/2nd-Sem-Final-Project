@@ -1,117 +1,82 @@
 #ifndef _GLOBAL_H_
 #define _GLOBAL_H_
-#include <string.h>
-using namespace std;
+
+#include <string>
+
+using std::string;
+
 #define WIDTH 100	   // main screen width (to the sidemost)
 #define HEIGHT 30	   // total height
 #define MAIN_SCREEN 70 // width of the playing field
 
-int testscore;				// declaring variable
-int highest[3] = {0, 0, 0}; // initializing array for highest value and assigning initial //value 0
-int level;					// initializing variable for choosing levels
-int speed;					// initializing variable for choosing speed
-string Name;				// initializing variable for saving player’s name
+// Declaration of global variables
+extern int testscore;  // variable for testing score
+extern int highest[3]; // array for highest value
+extern int level;	   // variable for choosing levels
+extern int speed;	   // variable for choosing speed
 
-// array for storing coordinates of the enemy car
-int enemyX[3];
-int enemyY[3];
+extern std::string Name; // variable for saving player’s name
 
-int flag[3];							 // array for checking whether to generate enemy or not
-int startcarY = HEIGHT - 4;				 // initial y coordinate for the generated car
-int carposition = (MAIN_SCREEN / 2) - 1; /// initial x coordinate for the generated car
-int score = 0;							 // initializing variable for score
-int option;								 // initializing variable for storing user’s input option
-int sec_prev = 0;						 // initializing variable for starting time (seconds)
-int A = 0;								 // initializing variable
-int diff;								 // initializing variable for saving the total played time
-char *start_time;						 // initializing variable for starting time
+extern int enemyX[3]; // array for storing coordinates of the enemy car
+extern int enemyY[3]; // array for storing coordinates of the enemy car
 
-// ascii values of needed symbols
-char full = 219; // dark full block
-char top = 223;
-char bottom = 220;
-char block = 219; // dark full block
-char block1 = 176;
-char block2 = 177;
-char block3 = 178;
-char line = 205;
-char line2 = 186;
-char O = 233;
-char S = 48;
+extern int flag[3];		 // array for checking whether to generate enemy or not
+extern int startcarY;	 // initial y coordinate for the generated car
+extern int carposition;	 // initial x coordinate for the generated car
+extern int score;		 // variable for score
+extern int option;		 // variable for storing user’s input option
+extern int sec_prev;	 // variable for starting time (seconds)
+extern int A;			 // variable
+extern int diff;		 // variable for saving the total played time
+extern char *start_time; // variable for starting time
 
-// assigning appearance of the car
-char car[4][4] = {' ', block3, ' ', block3,
-				  '*', '*', '*', '*',
-				  '*', '*', '*', '*',
-				  ' ', block3, ' ', block3};
+// ASCII values of needed symbols
+const char full = 219; // dark full block
+const char top = 223;
+const char bottom = 220;
+const char block = 219; // dark full block
+const char block1 = 176;
+const char block2 = 177;
+const char block3 = 178;
+const char line = 205;
+const char line2 = 186;
+const char O = 233;
+const char S = 48;
 
-// assigning appearance of the number ‘1’
-char one[6][6] = {' ', ' ', ' ', ' ', '#', ' ',
-				  ' ', ' ', ' ', '#', '#', ' ',
-				  ' ', ' ', '#', ' ', '#', ' ',
-				  ' ', '#', ' ', ' ', '#', ' ',
-				  ' ', ' ', ' ', ' ', '#', ' ',
-				  ' ', ' ', ' ', ' ', '#', ' '};
-// assigning appearance of the number ‘2’
-char two[6][6] = {' ', ' ', '#', ' ', ' ', ' ',
-				  ' ', '#', ' ', '#', ' ', ' ',
-				  ' ', ' ', ' ', ' ', '#', ' ',
-				  ' ', ' ', ' ', '#', ' ', ' ',
-				  ' ', ' ', '#', ' ', ' ', ' ',
-				  ' ', '#', '#', '#', '#', '#'};
+// Appearance of the car
+const char car[4][4] = {
+	{' ', block3, ' ', block3},
+	{'*', '*', '*', '*'},
+	{'*', '*', '*', '*'},
+	{' ', block3, ' ', block3}};
 
-// assigning appearance of the number ‘3’
-char three[7][7] = {
-	' ',
-	'#',
-	'#',
-	' ',
-	' ',
-	' ',
-	' ',
-	'#',
-	' ',
-	' ',
-	'#',
-	' ',
-	' ',
-	' ',
-	' ',
-	' ',
-	' ',
-	'#',
-	' ',
-	' ',
-	' ',
-	' ',
-	'#',
-	'#',
-	'#',
-	' ',
-	' ',
-	' ',
-	' ',
-	' ',
-	' ',
-	'#',
-	' ',
-	' ',
-	' ',
-	'#',
-	' ',
-	' ',
-	'#',
-	' ',
-	' ',
-	' ',
-	' ',
-	'#',
-	'#',
-	' ',
-	' ',
-	' ',
-	' ',
-};
+// Appearance of the number ‘1’
+const char one[6][6] = {
+	{' ', ' ', ' ', ' ', '#', ' '},
+	{' ', ' ', ' ', '#', '#', ' '},
+	{' ', ' ', '#', ' ', '#', ' '},
+	{' ', '#', ' ', ' ', '#', ' '},
+	{' ', ' ', ' ', ' ', '#', ' '},
+	{' ', ' ', ' ', ' ', '#', ' '}};
+
+// Appearance of the number ‘2’
+const char two[6][6] = {
+	{' ', ' ', '#', ' ', ' ', ' '},
+	{' ', '#', ' ', '#', ' ', ' '},
+	{' ', ' ', ' ', ' ', '#', ' '},
+	{' ', ' ', ' ', '#', ' ', ' '},
+	{' ', ' ', '#', ' ', ' ', ' '},
+	{' ', '#', '#', '#', '#', '#'}};
+
+// Appearance of the number ‘3’
+const char three[7][7] = {
+	{' ', '#', '#', ' ', ' ', ' ', ' '},
+	{' ', ' ', '#', ' ', ' ', ' ', '#'},
+	{' ', ' ', ' ', ' ', ' ', ' ', ' '},
+	{' ', ' ', ' ', ' ', ' ', ' ', ' '},
+	{' ', ' ', '#', ' ', ' ', ' ', '#'},
+	{' ', ' ', '#', '#', '#', ' ', ' '},
+	{' ', '#', '#', ' ', ' ', ' ', ' '}};
 
 // defining structure to store player info
 struct contacts
@@ -121,17 +86,6 @@ struct contacts
 	string time;
 };
 
-contacts a[10], b[10]; // assigning initial values
+extern contacts a[10], b[10]; // assigning initial values
 
-HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-COORD cursor;
-
-// function to point to the coordinates passed to the function
-void position(int x, int y)
-{
-	cursor.X = x;
-	cursor.Y = y;
-	SetConsoleCursorPosition(console, cursor);
-}
-
-#endif
+#endif // _GLOBAL_H_

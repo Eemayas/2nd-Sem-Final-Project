@@ -4,10 +4,16 @@
 #include <wtypes.h>
 #include <string>
 
+using std::string;
+
 class Board
 {
 public:
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD cursor;
+
+    void position(int x, int y);
+
     void color(int i);
 
     int center(string s);

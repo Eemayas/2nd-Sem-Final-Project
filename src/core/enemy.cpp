@@ -10,7 +10,7 @@ using namespace std;
 void Enemy::gen_Enemy(int enemy_number)
 {
     int s = rand();
-    enemyX[enemy_number] = 17 + s % (33); // setting random position on the main field
+    enemyX[enemy_number] = 17 + s % (33); // setting random board.position on the main field
 }
 
 /**defining function
@@ -25,13 +25,13 @@ void Enemy::print_Enemy(int enemy_number)
     // if the condition is fulfilled then print the enemy
     if (flag[enemy_number] == 1)
     {
-        position(enemyX[enemy_number], enemyY[enemy_number]);
+        board.position(enemyX[enemy_number], enemyY[enemy_number]);
         cout << block3 << "**" << block3;
-        position(enemyX[enemy_number], enemyY[enemy_number] + 1);
+        board.position(enemyX[enemy_number], enemyY[enemy_number] + 1);
         cout << " ** ";
-        position(enemyX[enemy_number], enemyY[enemy_number] + 2);
+        board.position(enemyX[enemy_number], enemyY[enemy_number] + 2);
         cout << block3 << "**" << block3;
-        position(enemyX[enemy_number], enemyY[enemy_number] + 3);
+        board.position(enemyX[enemy_number], enemyY[enemy_number] + 3);
         cout << " " << block2 << block2 << " ";
     }
 }
@@ -43,15 +43,16 @@ void Enemy::print_Enemy(int enemy_number)
 
 void Enemy::erase_Enemy(int enemy_number)
 {
+    Board board;
     if (flag[enemy_number] == true)
     {
-        position(enemyX[enemy_number], enemyY[enemy_number]);
+        board.position(enemyX[enemy_number], enemyY[enemy_number]);
         cout << "    "; // x,1
-        position(enemyX[enemy_number], enemyY[enemy_number] + 1);
+        board.position(enemyX[enemy_number], enemyY[enemy_number] + 1);
         cout << "    "; // x,2
-        position(enemyX[enemy_number], enemyY[enemy_number] + 2);
+        board.position(enemyX[enemy_number], enemyY[enemy_number] + 2);
         cout << "    "; // x,3
-        position(enemyX[enemy_number], enemyY[enemy_number] + 3);
+        board.position(enemyX[enemy_number], enemyY[enemy_number] + 3);
         cout << "    "; // x,4
     }
 }

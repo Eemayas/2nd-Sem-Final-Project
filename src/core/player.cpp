@@ -16,7 +16,7 @@ void Player::print_Car()
     {
         for (int i = 0; i < 4; i++)
         {
-            position(carposition + i, j + startcarY);
+            board.position(carposition + i, j + startcarY);
             cout << car[i][j];
         }
     }
@@ -28,12 +28,13 @@ void Player::print_Car()
  */
 void Player::erase_Car()
 {
+    Board board;
     // using for loop to erase the printed car
     for (int j = 0; j < 4; j++)
     {
         for (int i = 0; i < 4; i++)
         {
-            position(carposition + i, j + startcarY);
+            board.position(carposition + i, j + startcarY);
             cout << " ";
         }
     }

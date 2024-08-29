@@ -3,6 +3,11 @@
 #include <iostream>
 #include <board.h>
 
+using std::cin;
+using std::cout;
+using std::getline;
+using std::string;
+
 /**defining function
  *@brief function to print main menu1 at the start
  *@param text_1 string to save certain texts as required
@@ -16,16 +21,16 @@ void Screen::menu1()
 
     // printing the text in the center of the main screen
     string text_1 = "-----------------------------";
-    position(board.center(text_1), 4); // calling the position() function
+    board.position(board.center(text_1), 4); // calling the board.position() function
     cout << text_1;
     text_1 = "|        Car Race Game        |";
-    position(board.center(text_1), 5);
+    board.position(board.center(text_1), 5);
     cout << text_1;
     text_1 = "-----------------------------";
-    position(board.center(text_1), 6);
+    board.position(board.center(text_1), 6);
     cout << text_1;
     text_1 = "ENTER THE PLAYER'S NAME:";
-    position(board.center(text_1), 10);
+    board.position(board.center(text_1), 10);
     cout << text_1;
     getline(cin, Name); // storing the user’s name
 }
@@ -44,28 +49,28 @@ void Screen::menu2()
 
     // printing the text in the center of the main screen
     string text_1 = "-----------------------------";
-    position(board.center(text_1), 4);
+    board.position(board.center(text_1), 4);
     cout << text_1;
     text_1 = "|        Car Race Game        |";
-    position(board.center(text_1), 5);
+    board.position(board.center(text_1), 5);
     cout << text_1;
     text_1 = "-----------------------------";
-    position(board.center(text_1), 6);
+    board.position(board.center(text_1), 6);
     cout << text_1;
     text_1 = "1. Start Game";
-    position(board.center(text_1), 10);
+    board.position(board.center(text_1), 10);
     cout << text_1;
     text_1 = "2. Instructions";
-    position(board.center(text_1), 12);
+    board.position(board.center(text_1), 12);
     cout << text_1;
     text_1 = "3. Leaderboard";
-    position(board.center(text_1), 14);
+    board.position(board.center(text_1), 14);
     cout << text_1;
     text_1 = "4. Quit";
-    position(board.center(text_1), 16);
+    board.position(board.center(text_1), 16);
     cout << text_1;
     text_1 = "Select option:";
-    position(board.center(text_1), 18);
+    board.position(board.center(text_1), 18);
     cout << text_1;
     cin >> option; // stores the user’s option
     system("cls"); // clearing the whole screen
@@ -77,25 +82,25 @@ void Screen::levelSelection()
     system("Color 0A");
     system("cls");
     string text_1 = "-----------------------------";
-    position(board.center(text_1), 4); // calling the position() function to align at the center
+    board.position(board.center(text_1), 4); // calling the board.position() function to align at the center
     cout << text_1;
     text_1 = "|        Car Race Game        |";
-    position(board.center(text_1), 5);
+    board.position(board.center(text_1), 5);
     cout << text_1;
     text_1 = "-----------------------------";
-    position(board.center(text_1), 6);
+    board.position(board.center(text_1), 6);
     cout << text_1;
     text_1 = "1.EASY  MODE";
-    position(board.center(text_1), 10);
+    board.position(board.center(text_1), 10);
     cout << text_1;
     text_1 = "2. MEDIUM MODE";
-    position(board.center(text_1), 12);
+    board.position(board.center(text_1), 12);
     cout << text_1;
     text_1 = "3.HARD MODE";
-    position(board.center(text_1), 14);
+    board.position(board.center(text_1), 14);
     cout << text_1;
     text_1 = "Select option:";
-    position(board.center(text_1), 16);
+    board.position(board.center(text_1), 16);
     cout << text_1;
     cin >> level; // take the user input option to set the level
     system("cls");
@@ -121,13 +126,13 @@ void Screen::game_Over()
 
     // printing the text in the center of the main screen
     text_2 = "-----------------------";
-    position(board.center(text_2), 4);
+    board.position(board.center(text_2), 4);
     cout << text_2;
     text_2 = "|        GAME OVER        |";
-    position(board.center(text_2), 5);
+    board.position(board.center(text_2), 5);
     cout << text_2;
     text_2 = "-----------------------";
-    position(board.center(text_2), 6);
+    board.position(board.center(text_2), 6);
     cout << text_2;
 
     board.color(10); // calling the color function
@@ -141,22 +146,22 @@ void Screen::game_Over()
 
     // to align the text at the center
     int text_length = (WIDTH - (text_2_length + text_3_length)) / 2;
-    position(text_length, 10);
+    board.position(text_length, 10);
 
     // printing the text
     cout << text_2;
     cout << text_3;
 
     text_2 = "SCORE ==> ";
-    position(board.center(text_2), 12);
+    board.position(board.center(text_2), 12);
     cout << text_2 << score;
     text_2 = "PLAYED TIME ==> ";
-    position(board.center(text_2), 14);
+    board.position(board.center(text_2), 14);
     cout << text_2;
     cout << diff << " sec";
 
     text_2 = "PRESS ANY KEY AND ENTER TO CONTINUE";
-    position(board.center(text_2), 17);
+    board.position(board.center(text_2), 17);
     cout << text_2;
     char c;
     cin >> c;
@@ -174,27 +179,27 @@ void Screen::instruction()
     Board board;
     system("Color 0A"); // change the text color to green
     string text1 = "----------------------------";
-    position(board.center(text1), 4);
+    board.position(board.center(text1), 4);
     cout << text1;
     text1 = "|        Instructions        |";
-    position(board.center(text1), 5);
+    board.position(board.center(text1), 5);
     cout << text1;
     text1 = "----------------------------";
-    position(board.center(text1), 6);
+    board.position(board.center(text1), 6);
     cout << text1;
     text1 = "Avoid Cars by moving left or right ";
-    position(board.center(text1), 9);
+    board.position(board.center(text1), 9);
     cout << text1;
     text1 = "Press 'A' or '<==' to move left";
-    position(board.center(text1), 11);
+    board.position(board.center(text1), 11);
     cout << text1;
     text1 = "Press 'D' or '==>' to move right";
-    position(board.center(text1), 13);
+    board.position(board.center(text1), 13);
     cout << text1;
     text1 = "Press 'Esc' to exit";
-    position(board.center(text1), 15);
+    board.position(board.center(text1), 15);
     cout << text1;
     text1 = "Press any key to go back to menu";
-    position(board.center(text1), 19);
+    board.position(board.center(text1), 19);
     cout << text1;
 }

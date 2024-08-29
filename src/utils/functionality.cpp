@@ -1,11 +1,21 @@
 #include "functionality.h"
+#include "global.h"
 #include <iostream>
 #include "board.h"
-#include <enemy.h>
+#include "enemy.h"
 #include <conio.h>
-#include <player.h>
+#include "player.h"
 #include <sstream>
-#include <screen.h>
+#include "screen.h"
+#include <fstream>
+#include <string>
+
+using std::getline;
+using std::ifstream;
+using std::ios;
+using std::ofstream;
+using std::string;
+using std::stringstream;
 /**defining function
  *@brief function to print score
  *@return void
@@ -14,9 +24,9 @@
 void Functionality::updateScore()
 {
     Board board;
-    position(MAIN_SCREEN + 7, 5);
+    board.position(MAIN_SCREEN + 7, 5);
     board.color(10);
-    cout << "Score: " << score << endl; // printing the score
+    std::cout << "Score: " << score << std::endl; // printing the score
 }
 
 /**defining function
@@ -36,19 +46,6 @@ int Functionality::collision(int enemy_number)
         }
     }
     return x;
-}
-
-/**defining function
- *@brief function to erase the enemy and set the coordinate for new enemy
- *@return 0
- */
-
-void Functionality::reset(int enemy_number)
-{
-    Enemy enemy;
-    enemy.erase_Enemy(enemy_number); // erases the enemy
-    enemyY[enemy_number] = 1;        // coordinate of new enemy of y axis
-    enemy.gen_Enemy(enemy_number);   // generates the enemy coordinate
 }
 
 /**defining function
@@ -153,12 +150,12 @@ void Functionality::downward(int enemy_number, int sleep, int q)
  *@return void
  */
 
-void Functionality::highest()
+void Functionality::calculate_highest()
 {
     string testname = Name;
-    string testtime = to_string(diff); // to_string changes the integer to string type
+    string testtime = std::to_string(diff); // to_string changes the integer to string type
     ifstream file;
-    file.open("highest.csv", ios::app); // opening the file
+    file.open("highest.csv", std::ios::app); // opening the file
     string s;
     // checking if file is open or not
     if (file.is_open())
@@ -169,14 +166,14 @@ void Functionality::highest()
             getline(file, a[i].name, ',');
             getline(file, s, ',');
             getline(file, a[i].time);
-            stringstream qw(s);
+            std::stringstream qw(s);
             qw >> a[i].score;
         }
     }
 
     else
     {
-        cout << "Error"; // if not opened
+        std::cout << "Error"; // if not opened
     }
     int i = 0;
 
@@ -198,7 +195,7 @@ void Functionality::highest()
             a[i].name = testname;
             a[i].time = testtime;
 
-            // cout<<i<<endl;
+            // std::cout<<i<<std::endl;
             break;
         }
         else
@@ -208,9 +205,9 @@ void Functionality::highest()
     }
     file.close();
     // for (int i = 0; i < 3; i++) {
-    //    cout << "Name :      " << a[i].name << endl;
+    //    std::cout << "Name :      " << a[i].name << std::endl;
     //
-    // cout<< "Nick :   " << a[i].score << endl;}
+    // std::cout<< "Nick :   " << a[i].score << std::endl;}
 
     // clearing the previous old file and opening a new file
     fout1.open("highest.csv", ios::trunc);
@@ -219,7 +216,7 @@ void Functionality::highest()
     {
         fout1 << a[i].name << ",";
         fout1 << a[i].score << ",";
-        fout1 << a[i].time << endl;
+        fout1 << a[i].time << std::endl;
     }
     fout1.close(); // closes the file
 }
@@ -235,14 +232,14 @@ void Functionality::leaderboard()
     system("Color 0A"); // changes the text board.color to green
     // printing the text in board.center if the terminal
     string text1 = "----------------------------";
-    position(board.center(text1), 4);
-    cout << text1;
+    board.position(board.center(text1), 4);
+    std::cout << text1;
     text1 = "|        Leaderboard        |";
-    position(board.center(text1), 5);
-    cout << text1;
+    board.position(board.center(text1), 5);
+    std::cout << text1;
     text1 = "----------------------------";
-    position(board.center(text1), 6);
-    cout << text1;
+    board.position(board.center(text1), 6);
+    std::cout << text1;
     ifstream file1;
     file1.open("highest.csv", ios::app); // opening the file
     string s1;
@@ -254,43 +251,43 @@ void Functionality::leaderboard()
             getline(file1, b[i].name, ',');
             getline(file1, s1, ',');
             getline(file1, b[i].time);
-            stringstream qw1(s1);
+            std::stringstream qw1(s1);
             qw1 >> b[i].score;
 
-            position((MAIN_SCREEN / 4), 8);
-            cout << "S.N.";
-            position((2) * (MAIN_SCREEN / 4), 8);
-            cout << "NAME";
-            position((3) * (MAIN_SCREEN / 4), 8);
-            cout << "SCORE";
-            position((4) * (MAIN_SCREEN / 4), 8);
-            cout << "TIME";
+            board.position((MAIN_SCREEN / 4), 8);
+            std::cout << "S.N.";
+            board.position((2) * (MAIN_SCREEN / 4), 8);
+            std::cout << "NAME";
+            board.position((3) * (MAIN_SCREEN / 4), 8);
+            std::cout << "SCORE";
+            board.position((4) * (MAIN_SCREEN / 4), 8);
+            std::cout << "TIME";
             // printing the data from the structure
             for (int i = 0; i < 3; i++)
             {
                 int j = 1;
 
-                position((j) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                cout << i + 1;
-                position((j + 1) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                cout << b[i].name;
-                position((j + 2) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                cout << b[i].score;
-                position((j + 3) * (MAIN_SCREEN / 4), 10 + (3 * i));
-                cout << b[i].time << " sec.";
+                board.position((j) * (MAIN_SCREEN / 4), 10 + (3 * i));
+                std::cout << i + 1;
+                board.position((j + 1) * (MAIN_SCREEN / 4), 10 + (3 * i));
+                std::cout << b[i].name;
+                board.position((j + 2) * (MAIN_SCREEN / 4), 10 + (3 * i));
+                std::cout << b[i].score;
+                board.position((j + 3) * (MAIN_SCREEN / 4), 10 + (3 * i));
+                std::cout << b[i].time << " sec.";
             }
         }
     }
     // if file is not openedd
     else
     {
-        position(MAIN_SCREEN / 2, 7);
-        cout << "Error";
+        board.position(MAIN_SCREEN / 2, 7);
+        std::cout << "Error";
     }
 
     // getch
-    cin.get();
-    cin.get();
+    std::cin.get();
+    std::cin.get();
 }
 
 /**
@@ -301,13 +298,14 @@ void Functionality::leaderboard()
 */
 void Functionality::countdown()
 {
+    Board board;
     // using two for loops; one for the appearance of the number and another to erase for each of the three numbers
     for (int j = 0; j < 6; j++)
     {
         for (int i = 0; i < 6; i++)
         {
-            position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the position() function
-            cout << one[j][i];                                     // prints '1'
+            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the board.position() function
+            std::cout << one[j][i];                                      // prints '1'
         }
     }
     Sleep(1);
@@ -315,8 +313,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
-            cout << " "; // erases '1'
+            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            std::cout << " "; // erases '1'
         }
     }
 
@@ -324,8 +322,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the position() function
-            cout << two[j][i];                                     // prints '2'
+            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3); // calling the board.position() function
+            std::cout << two[j][i];                                      // prints '2'
         }
     }
     Sleep(1);
@@ -333,8 +331,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 6; i++)
         {
-            position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
-            cout << " "; // erases '2'
+            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            std::cout << " "; // erases '2'
         }
     }
 
@@ -342,8 +340,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 7; i++)
         {
-            position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
-            cout << three[j][i]; // prints '3'
+            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            std::cout << three[j][i]; // prints '3'
         }
     }
     Sleep(1);
@@ -351,8 +349,8 @@ void Functionality::countdown()
     {
         for (int i = 0; i < 7; i++)
         {
-            position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
-            cout << " "; // erses '3'
+            board.position(MAIN_SCREEN / 2 + i - 3, HEIGHT / 2 + j - 3);
+            std::cout << " "; // erses '3'
         }
     }
 }
@@ -416,13 +414,13 @@ void Functionality::play(int x, int s, int z)
             testscore = score;
 
             // opening the file named ‘sample14’
-            fout.open("sample14.csv", ios::app);
-            fout << Name << ",";   // saving the name in a cell of excel
-            fout << score << endl; // saves start time and end time in two corresponding cells
-            fout.close();          // closes the opened file
-            screen.game_Over();    // calling the function game_Over
-            highest();             // calling highest() function from parent class
-            score = 0;             // re-initializing the value of ‘score’ as 0
+            fout.open("sample14.csv", std::ios::app);
+            fout << Name << ",";        // saving the name in a cell of excel
+            fout << score << std::endl; // saves start time and end time in two corresponding cells
+            fout.close();               // closes the opened file
+            screen.game_Over();         // calling the function game_Over
+            calculate_highest();        // calling calculate_highest() function from parent class
+            score = 0;                  // re-initializing the value of ‘score’ as 0
             break;
         }
     }

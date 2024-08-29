@@ -1,7 +1,15 @@
 #include "board.h"
-#include <consoleapi2.h>
+#include <windows.h>
 #include <iostream>
 using namespace std;
+
+// function to point to the coordinates passed to the function
+void Board::position(int x, int y)
+{
+    cursor.X = x;
+    cursor.Y = y;
+    SetConsoleCursorPosition(console, cursor);
+}
 
 /**defining function
  *@brief function to change the color of the text

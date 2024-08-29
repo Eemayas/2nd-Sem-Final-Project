@@ -1,7 +1,7 @@
 #ifndef _SCREEN_H_
 #define _SCREEN_H_
 
-#include "global.h" // including header file
+// #include "global.h" // including header file
 
 class Screen
 {

@@ -1,7 +1,7 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
-#include "global.h" // including header file
+// #include "global.h" // including header file
 
 class Enemy
 {
