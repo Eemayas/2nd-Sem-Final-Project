@@ -31,6 +31,7 @@ void Screen::nameEntryMenu()
         "-----------------------------",
         "|        Car Race Game        |",
         "-----------------------------",
+        " ",
         "ENTER THE PLAYER'S NAME: "};
 
     // Print each line of the menu at the appropriate position
@@ -43,7 +44,7 @@ void Screen::nameEntryMenu()
             cout << endl;
         }
     }
-    getline(cin, Name); // storing the user’s name
+    getline(cin, playerName); // storing the user’s name
 }
 
 /**
@@ -70,6 +71,7 @@ void Screen::displayMenu()
         "2. Instructions",
         "3. Leaderboard",
         "4. Quit",
+        " ",
         "Select option:"};
 
     while (true)
@@ -85,10 +87,10 @@ void Screen::displayMenu()
             }
         }
 
-        cin >> option; // Store the user’s option
+        cin >> menuOption; // Store the user’s option
 
         // Validate input
-        if (option >= 1 && option <= 4)
+        if (menuOption >= 1 && menuOption <= 4)
         {
             system("cls"); // Clear the screen
             break;         // Exit the loop if input is valid
@@ -102,11 +104,11 @@ void Screen::displayMenu()
 }
 
 /**
- * @brief Displays the level selection menu for the Car Race Game.
+ * @brief Displays the selectedLevel selection menu for the Car Race Game.
  *
  * This function clears the screen, sets the text color to green,
- * and prints the level selection menu centered on the screen. It prompts the user
- * to select a difficulty level and stores the choice in the 'level' member variable.
+ * and prints the selectedLevel selection menu centered on the screen. It prompts the user
+ * to select a difficulty selectedLevel and stores the choice in the 'selectedLevel' member variable.
  *
  * @param None
  * @return void
@@ -124,6 +126,7 @@ void Screen::levelSelection()
         "1. EASY MODE",
         "2. MEDIUM MODE",
         "3. HARD MODE",
+        " ",
         "Select option:"};
 
     while (true)
@@ -139,17 +142,17 @@ void Screen::levelSelection()
             }
         }
 
-        cin >> level; // Store the user’s selected level
+        cin >> selectedLevel; // Store the user’s selected selectedLevel
 
         // Validate input
-        if (level >= 1 && level <= 3)
+        if (selectedLevel >= 1 && selectedLevel <= 3)
         {
             system("cls"); // Clear the screen
             break;         // Exit the loop if input is valid
         }
         else
         {
-            cout << "Invalid level. Please select a valid level (1-3)." << endl;
+            cout << "Invalid selectedLevel. Please select a valid selectedLevel (1-3)." << endl;
             system("cls"); // Clear the screen for re-display
         }
     }
@@ -189,19 +192,19 @@ void Screen::gameOver()
 
     // Display player's name
     gameOverText = "PLAYER'S NAME: ";
-    playerNameText = Name;
-    int playerNameOffset = (WIDTH - (gameOverText.size() + playerNameText.size())) / 2;
+    playerNameText = playerName;
+    int playerNameOffset = (SCREEN_WIDTH - (gameOverText.size() + playerNameText.size())) / 2;
     board.setCursorPosition(playerNameOffset, 10);
     cout << gameOverText << playerNameText << endl;
 
     // Display score and time played
     gameOverText = "SCORE ==> ";
     board.setCursorPosition(board.calculateCenterOffset(gameOverText), 12);
-    cout << gameOverText << score << endl;
+    cout << gameOverText << currentScore << endl;
 
     gameOverText = "PLAYED TIME ==> ";
     board.setCursorPosition(board.calculateCenterOffset(gameOverText), 14);
-    cout << gameOverText << diff << " sec" << endl;
+    cout << gameOverText << timeDifference << " sec" << endl;
 
     // Prompt user to continue
     gameOverText = "PRESS ANY KEY AND ENTER TO CONTINUE";

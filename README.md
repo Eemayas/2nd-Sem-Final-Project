@@ -29,7 +29,7 @@ The Car Race Game requires the following header files:
    - Instructions: Displays instructions on how to play the game.
    - Leaderboard: Shows the top scores of previous players.
    - Quit: Exits the game.
-4. If you choose "Start Game," select a mode and level to play.
+4. If you choose "Start Game," select a mode and selectedLevel to play.
 5. Use the 'A' or '<--' keys to move the car left and the 'D' or '-->' keys to move the car right.
 6. Avoid collision with other cars on the road.
 7. The game will end when the car collides with another car. The final score and played time will be displayed.
@@ -39,8 +39,6 @@ The Car Race Game requires the following header files:
 ## Contributing
 
 Contributions to the Car Race Game are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
-
-
 
 ## Author
 

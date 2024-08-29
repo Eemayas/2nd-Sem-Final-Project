@@ -58,25 +58,13 @@ public:
      * @brief Calculates the number of leading spaces needed to center text.
      *
      * This function computes the number of spaces required to center a given
-     * string `text` within a console width defined by `WIDTH`. The number of
+     * string `text` within a console width defined by `SCREEN_WIDTH`. The number of
      * leading spaces is returned to position the text in the center.
      *
      * @param text The string to be centered.
      * @return int The number of leading spaces needed to center the text.
      */
     int calculateCenterOffset(const std::string &text) const;
-
-    // TODO: Shift this to functionalities
-    /**
-     * @brief Retrieves the current local time as a string.
-     *
-     * This function obtains the current local time and returns it as a
-     * string in a human-readable format. The time is formatted according
-     * to the system's locale and returned as a character array.
-     *
-     * @return char* A string representing the current local time.
-     */
-    char *getCurrentTime();
 
     /**
      * @brief Displays the current time in 12-hour format on the screen.

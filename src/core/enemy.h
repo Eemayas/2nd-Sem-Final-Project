@@ -40,6 +40,30 @@ public:
      * @param enemyIndex The index of the enemy car.
      */
     void eraseEnemy(int enemyIndex);
+
+    /**
+     * @brief Handles the movement of enemies in the game.
+     *
+     * This function controls the downward movement of the enemies on the screen.
+     * It also manages the appearance of a second enemy when certain conditions are met.
+     *
+     * @param enemy Reference to the Enemy object representing the enemies.
+     * @param enemyIndex Index of the enemy to move.
+     * @param sleep Time in milliseconds to pause between movements, controlling the speed.
+     * @return void
+     */
+    void enemyMovement(Enemy &enemy, int enemyIndex, int sleep);
+
+    /**
+     * @brief Resets the position of the specified enemy and regenerates its coordinates.
+     *
+     * This function erases the specified enemy from its current position and sets
+     * a new position for the enemy by updating its coordinates. The enemy is then
+     * regenerated at the new position.
+     *
+     * @param enemyIndex The index of the enemy to reset.
+     */
+    void resetEnemy(int enemyIndex);
 };
 
 #endif

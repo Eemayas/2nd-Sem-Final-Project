@@ -36,11 +36,11 @@ public:
     void displayMenu();
 
     /**
-     * @brief Displays the level selection menu for the Car Race Game.
+     * @brief Displays the selectedLevel selection menu for the Car Race Game.
      *
      * This function clears the screen, sets the text color to green,
-     * and prints the level selection menu centered on the screen. It prompts the user
-     * to select a difficulty level and stores the choice in the 'level' member variable.
+     * and prints the selectedLevel selection menu centered on the screen. It prompts the user
+     * to select a difficulty selectedLevel and stores the choice in the 'selectedLevel' member variable.
      *
      * @param None
      * @return void
