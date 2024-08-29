@@ -210,7 +210,7 @@ void parent::instruction()
 void parent::print_Clock(int a)
 {
 
-	int seconds[60], minutes[60], hours[24];
+	int seconds[61], minutes[61], hours[25];
 	string str;
 
 	// storing total seconds passed
@@ -219,26 +219,42 @@ void parent::print_Clock(int a)
 	// getting values of seconds, minutes and hours
 	struct tm *ct = localtime(&total_seconds);
 
-	seconds[a] = ct->tm_sec;
-	minutes[a] = ct->tm_min;
-	hours[a] = ct->tm_hour;
+	// seconds[a] = ct->tm_sec;
+	// minutes[a] = ct->tm_min;
+	// hours[a] = ct->tm_hour;
 
 	// converting it into 12 hour format
-	if (hours[a] >= 12)
+	if (ct->tm_hour >= 12)
 		str = "PM";
 	else
 		str = "AM";
-	hours[a] = hours[a] > 12 ? hours[a] - 12 : hours[a];
+	ct->tm_hour = ct->tm_hour > 12 ? ct->tm_hour - 12 : ct->tm_hour;
 
 	// printing the result
 	color(10);
-	if (seconds[a] == sec_prev + 1 || (sec_prev == 59 && seconds[a] == 0))
+	if (ct->tm_sec == sec_prev + 1 || (sec_prev == 59 && ct->tm_sec == 0))
 	{
 		position(MAIN_SCREEN + 6, 19);
-		cout << (hours[a] < 10 ? "0" : "") << hours[a] << ":" << (minutes[a] < 10 ? "0" : "") << minutes[a] << ":" << (seconds[a] < 10 ? "0" : "") << seconds[a] << " " << str;
+		cout << (ct->tm_hour < 10 ? "0" : "") << ct->tm_hour << ":" << (ct->tm_min < 10 ? "0" : "") << ct->tm_min << ":" << (ct->tm_sec < 10 ? "0" : "") << ct->tm_sec << " " << str;
 	}
 
-	sec_prev = seconds[a];
+	sec_prev = ct->tm_sec;
+	// // converting it into 12 hour format
+	// if (hours[a] >= 12)
+	// 	str = "PM";
+	// else
+	// 	str = "AM";
+	// hours[a] = hours[a] > 12 ? hours[a] - 12 : hours[a];
+
+	// // printing the result
+	// color(10);
+	// if (seconds[a] == sec_prev + 1 || (sec_prev == 59 && seconds[a] == 0))
+	// {
+	// 	position(MAIN_SCREEN + 6, 19);
+	// 	cout << (hours[a] < 10 ? "0" : "") << hours[a] << ":" << (minutes[a] < 10 ? "0" : "") << minutes[a] << ":" << (seconds[a] < 10 ? "0" : "") << seconds[a] << " " << str;
+	// }
+
+	// sec_prev = seconds[a];
 }
 
 /**defining function
