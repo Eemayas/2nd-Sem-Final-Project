@@ -24,24 +24,24 @@ The Car Race Game is an engaging console-based game where players navigate a car
 
 ## Table of Contents
 
-- [Features](#-features)
-- [Repository Structure](#-repository-structure)
-- [Modules](#-modules)
+- [Features](#features)
+- [Repository Structure](#repository-structure)
+- [Modules](#modules)
   - [root](#root)
   - [src](#src)
   - [src/utils](#srcutils)
   - [src/core](#srccore)
-- [Getting Started](#-getting-started)
+- [Getting Started](#getting-started)
   - [Requirements](#requirements)
-  - [Installation](#-installation)
-  - [Running the Game](#-running-the-game)
-- [How to Use the Game](#-how-to-use-the-game)
-- [Dependencies](#-dependencies)
-- [Demo](#-demo)
-- [Contributing](#-contributing)
+  - [Installation](#installation)
+  - [Running the Game](#running-the-game)
+- [How to Use the Game](#how-to-use-the-game)
+- [Dependencies](#dependencies)
+- [Demo](#demo)
+- [Contributing](#contributing)
   - [Contributing Guidelines](#contributing-guidelines)
-- [Contact](#-contact)
-- [License](#-license)
+- [Contact](#contact)
+- [License](#license)
 
 ---
 
