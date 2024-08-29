@@ -384,7 +384,7 @@ void Functionality::play(int x, int s, int z)
     countdown(); // calling function to start countdown
     while (1)
     {
-        board.print_Clock(A); // calling function to  print the digital clock
+        board.print_Clock(); // calling function to  print the digital clock
 
         speed = x;
 
