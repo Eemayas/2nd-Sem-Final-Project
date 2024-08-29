@@ -361,30 +361,30 @@ void parent::erase_Car()
  *@brief function to give the x coordinate for generating the enemy car
  *@return void
  */
-void parent::gen_Enemy(int ind)
+void parent::gen_Enemy(int enemy_number)
 {
 	int s = rand();
-	enemyX[ind] = 17 + s % (33); // setting random position on the main field
+	enemyX[enemy_number] = 17 + s % (33); // setting random position on the main field
 }
 
 /**defining function
  *@brief function to print the enemy car
- *@param flag[ind] variable to check whether to print the next enemy car or not
+ *@param flag[enemy_number] variable to check whether to print the next enemy car or not
  *@return void
  */
-void parent::print_Enemy(int ind)
+void parent::print_Enemy(int enemy_number)
 {
 	color(12);
 	// if the condition is fulfilled then print the enemy
-	if (flag[ind] == 1)
+	if (flag[enemy_number] == 1)
 	{
-		position(enemyX[ind], enemyY[ind]);
+		position(enemyX[enemy_number], enemyY[enemy_number]);
 		cout << block3 << "**" << block3;
-		position(enemyX[ind], enemyY[ind] + 1);
+		position(enemyX[enemy_number], enemyY[enemy_number] + 1);
 		cout << " ** ";
-		position(enemyX[ind], enemyY[ind] + 2);
+		position(enemyX[enemy_number], enemyY[enemy_number] + 2);
 		cout << block3 << "**" << block3;
-		position(enemyX[ind], enemyY[ind] + 3);
+		position(enemyX[enemy_number], enemyY[enemy_number] + 3);
 		cout << " " << block2 << block2 << " ";
 	}
 }
@@ -394,17 +394,17 @@ void parent::print_Enemy(int ind)
  *@return void
  */
 
-void parent::erase_Enemy(int ind)
+void parent::erase_Enemy(int enemy_number)
 {
-	if (flag[ind] == true)
+	if (flag[enemy_number] == true)
 	{
-		position(enemyX[ind], enemyY[ind]);
+		position(enemyX[enemy_number], enemyY[enemy_number]);
 		cout << "    "; // x,1
-		position(enemyX[ind], enemyY[ind] + 1);
+		position(enemyX[enemy_number], enemyY[enemy_number] + 1);
 		cout << "    "; // x,2
-		position(enemyX[ind], enemyY[ind] + 2);
+		position(enemyX[enemy_number], enemyY[enemy_number] + 2);
 		cout << "    "; // x,3
-		position(enemyX[ind], enemyY[ind] + 3);
+		position(enemyX[enemy_number], enemyY[enemy_number] + 3);
 		cout << "    "; // x,4
 	}
 }
@@ -415,12 +415,12 @@ void parent::erase_Enemy(int ind)
  *@return true if collision happens, otherwise return false
  */
 
-int parent::collision(int ind)
+int parent::collision(int enemy_number)
 {
 	int x;
-	if (enemyY[ind] + 4 >= HEIGHT - 2)
+	if (enemyY[enemy_number] + 4 >= HEIGHT - 2)
 	{
-		if (enemyX[ind] + 4 - carposition >= 0 && enemyX[ind] + 4 - carposition < 9)
+		if (enemyX[enemy_number] + 4 - carposition >= 0 && enemyX[enemy_number] + 4 - carposition < 9)
 		{
 			x = 1;
 		}
@@ -433,11 +433,11 @@ int parent::collision(int ind)
  *@return 0
  */
 
-void parent::reset(int ind)
+void parent::reset(int enemy_number)
 {
-	erase_Enemy(ind); // erases the enemy
-	enemyY[ind] = 1;  // coordinate of new enemy of y axis
-	gen_Enemy(ind);	  // generates the enemy coordinate
+	erase_Enemy(enemy_number); // erases the enemy
+	enemyY[enemy_number] = 1;  // coordinate of new enemy of y axis
+	gen_Enemy(enemy_number);   // generates the enemy coordinate
 }
 
 /**defining function
@@ -447,14 +447,14 @@ void parent::reset(int ind)
  *@return void
  */
 
-void parent::downward(int ind, int sleep, int q)
+void parent::downward(int enemy_number, int sleep, int q)
 {
 
-	print_Enemy(ind);	  // print the first enemy
-	print_Enemy(ind + 1); // print the second enemy
-	Sleep(sleep);		  // sets the speed for the enemy
-	erase_Enemy(ind);	  // erase the first enemy
-	erase_Enemy(ind + 1); // erase the second enemy
+	print_Enemy(enemy_number);	   // print the first enemy
+	print_Enemy(enemy_number + 1); // print the second enemy
+	Sleep(sleep);				   // sets the speed for the enemy
+	erase_Enemy(enemy_number);	   // erase the first enemy
+	erase_Enemy(enemy_number + 1); // erase the second enemy
 
 	// checking the condition for appearance of second enemy
 	if (enemyY[1] == 13)
@@ -466,13 +466,13 @@ void parent::downward(int ind, int sleep, int q)
 	}
 
 	// moving the enemy downwards
-	if (flag[ind] == 1)
+	if (flag[enemy_number] == 1)
 	{
-		enemyY[ind] += 1;
+		enemyY[enemy_number] += 1;
 	}
-	if (flag[ind + 1] == 1)
+	if (flag[enemy_number + 1] == 1)
 	{
-		enemyY[ind + 1] += 1;
+		enemyY[enemy_number + 1] += 1;
 	}
 
 	// moving the car left or right as the user wants
@@ -504,17 +504,17 @@ void parent::downward(int ind, int sleep, int q)
 	}
 
 	// checking the condition if the enemy has reached the bottom or not
-	if (enemyY[ind] > HEIGHT - 4)
+	if (enemyY[enemy_number] > HEIGHT - 4)
 	{
-		reset(ind);		   // calling reset() function
-		score = score + q; // increasing the score
+		reset(enemy_number); // calling reset() function
+		score = score + q;	 // increasing the score
 		// Beep(1000,10);
 		updateScore(); // calling
 	}
 
-	if (enemyY[ind + 1] > HEIGHT - 4)
+	if (enemyY[enemy_number + 1] > HEIGHT - 4)
 	{
-		reset(ind + 1);
+		reset(enemy_number + 1);
 		score = score + q;
 		// Beep(1000,10);
 		updateScore();

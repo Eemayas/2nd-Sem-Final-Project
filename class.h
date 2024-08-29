@@ -1,7 +1,7 @@
 #ifndef _CLASS_H_
 #define _CLASS_H_
 
-#include <fstream> // include the <fstream> header file
+#include <fstream>	// include the <fstream> header file
 #include "global.h" // including header file
 ofstream fout1;
 ofstream fout;
@@ -26,13 +26,13 @@ public:
 	void side_Instruction();
 	void print_Car();
 	void erase_Car();
-	void gen_Enemy(int ind);
-	void print_Enemy(int ind);
-	void erase_Enemy(int ind);
-	int collision(int ind);
-	void reset(int ind);
+	void gen_Enemy(int enemy_number);
+	void print_Enemy(int enemy_number);
+	void erase_Enemy(int enemy_number);
+	int collision(int enemy_number);
+	void reset(int enemy_number);
 
-	void downward(int ind, int Sleep, int q);
+	void downward(int enemy_number, int Sleep, int q);
 	void highest();
 	void leaderboard();
 };
@@ -46,3 +46,4 @@ public:
 };
 
 #endif
+
