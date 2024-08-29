@@ -3,147 +3,177 @@
 #include <iostream>
 using namespace std;
 
-// function to point to the coordinates passed to the function
-void Board::position(int x, int y)
-{
-    cursor.X = x;
-    cursor.Y = y;
-    SetConsoleCursorPosition(console, cursor);
-}
-
-/**defining function
- *@brief function to change the color of the text
+/**
+ * @brief Sets the console cursor position to the specified coordinates.
+ *
+ * This function updates the cursor's position in the console window
+ * to the given x and y coordinates. It uses the Windows API function
+ * `SetConsoleCursorPosition` to move the cursor.
+ *
+ * @param x The x-coordinate (horizontal position) of the cursor.
+ * @param y The y-coordinate (vertical position) of the cursor.
  * @return void
  */
-void Board::color(int i)
+void Board::setCursorPosition(int x, int y)
 {
-    SetConsoleTextAttribute(console, i);
+    COORD position = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
+    SetConsoleCursorPosition(console, position);
 }
 
-/**defining function
- *@brief function to set the text in the center of the main screen
- * @return space
+/**
+ * @brief Sets the text color for the console output.
+ *
+ * This function changes the color of the text displayed in the console
+ * by using the Windows API function `SetConsoleTextAttribute`. The color
+ * attribute is specified by the parameter `colorCode`.
+ *
+ * @param colorCode The color code to set for the text. This should be a
+ *                  valid console text attribute value.
+ * @return void
  */
-int Board::center(string s)
+void Board::setTextColor(int colorCode)
 {
-    int spaces = (WIDTH - s.size()) / 2; // variable to store the center of width of the terminal
-    return spaces;
+    SetConsoleTextAttribute(console, colorCode);
 }
 
-/**defining function
- *@brief function to change the color of the text
- *@param tt variable to save local time
- * @return local time in character data type
+/**
+ * @brief Calculates the number of leading spaces needed to center text.
+ *
+ * This function computes the number of spaces required to center a given
+ * string `text` within a console width defined by `SCREEN_WIDTH`. The number of
+ * leading spaces is returned to position the text in the center.
+ *
+ * @param text The string to be centered.
+ * @return int The number of leading spaces needed to center the text.
  */
-
-char *Board::timme()
+int Board::calculateCenterOffset(const std::string &text) const
 {
-    time_t t;
-    struct tm *tt; // decalring variable for localtime()
-    time(&t);      // passing argument to time()
-    tt = localtime(&t);
-    return asctime(tt);
+    int textWidth = static_cast<int>(text.size());
+    int offset = (SCREEN_WIDTH - textWidth) / 2;
+    return offset;
 }
-/**defining function
- *@brief function to print the clock
- *@param seconds[a] array to save seconds
- *@param minutes[a] array to save minutes
- *@param hours[a] array to save hour
- *@param str string to save ‘AM’ or ‘PM’
- *@return void
+
+/**
+ * @brief Displays the current time in 12-hour format on the screen.
+ *
+ * This function retrieves the current local time, formats it in 12-hour
+ * format with "AM" or "PM" indicators, and prints it to the screen. It
+ * updates the displayed time only if a second has elapsed since the last
+ * update to minimize redundant prints.
+ *
+ * @param None
+ * @return void
  */
-
-void Board::print_Clock()
+void Board::printClock()
 {
-    string str;
+    // Retrieve the current time
+    time_t currentTime = time(0);
+    struct tm *timeStruct = localtime(&currentTime);
 
-    // storing total seconds passed
-    time_t total_seconds = time(0);
+    // Convert to 12-hour format
+    string period = (timeStruct->tm_hour >= 12) ? "PM" : "AM";
+    int hour = (timeStruct->tm_hour > 12) ? timeStruct->tm_hour - 12 : timeStruct->tm_hour;
+    hour = (hour == 0) ? 12 : hour; // Adjust hour to 12 if it's zero
 
-    // getting values of seconds, minutes and hours
-    struct tm *ct = localtime(&total_seconds);
-
-    // converting it into 12 hour format
-    if (ct->tm_hour >= 12)
-        str = "PM";
-    else
-        str = "AM";
-    ct->tm_hour = ct->tm_hour > 12 ? ct->tm_hour - 12 : ct->tm_hour;
-
-    // printing the result
-    color(10);
-    if (ct->tm_sec == sec_prev + 1 || (sec_prev == 59 && ct->tm_sec == 0))
+    // Print the formatted time if a second has elapsed
+    if (timeStruct->tm_sec == previousSecond + 1 || (previousSecond == 59 && timeStruct->tm_sec == 0))
     {
-        position(MAIN_SCREEN + 6, 19);
-        cout << (ct->tm_hour < 10 ? "0" : "") << ct->tm_hour << ":" << (ct->tm_min < 10 ? "0" : "") << ct->tm_min << ":" << (ct->tm_sec < 10 ? "0" : "") << ct->tm_sec << " " << str;
+        setTextColor(10);                           // Set text color
+        setCursorPosition(PLAY_AREA_WIDTH + 6, 19); // Position cursor
+        cout << (hour < 10 ? "0" : "") << hour << ":"
+             << (timeStruct->tm_min < 10 ? "0" : "") << timeStruct->tm_min << ":"
+             << (timeStruct->tm_sec < 10 ? "0" : "") << timeStruct->tm_sec << " "
+             << period;
     }
 
-    sec_prev = ct->tm_sec;
+    previousSecond = timeStruct->tm_sec; // Update previous second
 }
 
-/**defining function
- *@brief function to print the border in the main scren
- *@return void
+/**
+ * @brief Draws the border around the main screen.
+ *
+ * This function sets the text color to green, clears the screen, and then draws
+ * a border around the main screen using different characters for different
+ * parts of the border. The border is drawn along the top, bottom, and sides
+ * of the main screen area.
+ *
+ * @param None
+ * @return void
  */
-void Board::draw_Border()
+void Board::drawBorder()
 {
-    system("Color 0A");
+    system("Color 0A"); // Set text color to green
 
-    // using for loop to print the border
-    for (int j = 0; j < HEIGHT; j++)
+    // Draw the vertical lines on the left and right sides of the screen
+    for (int y = 0; y < SCREEN_HEIGHT; ++y)
     {
-        position(16, j);
-        cout << line2;
-        position(54, j);
-        cout << line2;
-        for (int i = 0; i < 16; i++)
+        setCursorPosition(16, y); // Position cursor for left border
+        cout << VERTICAL_LINE;
+        setCursorPosition(54, y); // Position cursor for right border
+        cout << VERTICAL_LINE;
+
+        // Draw the horizontal lines on the top and bottom of the main screen
+        for (int x = 0; x < 16; ++x)
         {
-            position(i, j);
-            cout << block1;
-            position(MAIN_SCREEN - i, j);
-            cout << block1;
+            setCursorPosition(x, y); // Position cursor for the top-left corner
+            cout << SHADE_LIGHT;
+            setCursorPosition(PLAY_AREA_WIDTH - x, y); // Position cursor for the top-right corner
+            cout << SHADE_LIGHT;
         }
 
-        for (int j = 0; j < HEIGHT; j++)
-        {
-            position(WIDTH, j);
-            cout << block << block2 << block1;
-        }
+        // Draw the bottom border lines
+        setCursorPosition(SCREEN_WIDTH, y);
+        cout << FULL_BLOCK << SHADE_MEDIUM << SHADE_LIGHT;
     }
-    for (int i = 0; i < WIDTH; i++)
+
+    // Draw the bottom border line
+    for (int x = 0; x < SCREEN_WIDTH; ++x)
     {
-        position(i, HEIGHT + 1);
-        cout << line;
+        setCursorPosition(x, SCREEN_HEIGHT + 1); // Position cursor for the bottom border
+        cout << HORIZONTAL_LINE;
     }
 }
 
-/**defining function
- *@brief function to print instruction at the side of the main screen
- *@return void
+/**
+ * @brief Displays instructions on the side of the main screen.
+ *
+ * This function sets the cursor position and prints instructional text on the side
+ * of the main screen. The instructions guide the user on how to interact with the game.
+ *
+ * @param None
+ * @return void
  */
-
-void Board::side_Instruction()
+void Board::displaySideInstructions()
 {
-    position(MAIN_SCREEN + 5, 4);
+    // Set cursor position and print border lines
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 4);
     cout << "-----------";
-    position(MAIN_SCREEN + 5, 6);
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 6);
     cout << "------------";
-    position(MAIN_SCREEN + 5, 10);
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 10);
     cout << "---------------";
-    position(MAIN_SCREEN + 7, 11);
+
+    // Print the instruction header
+    setCursorPosition(PLAY_AREA_WIDTH + 7, 11);
     cout << "INSTRUCTION";
-    position(MAIN_SCREEN + 5, 12);
+
+    // Print the border line below the header
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 12);
     cout << "---------------";
-    position(MAIN_SCREEN + 5, 13);
+
+    // Print instruction details
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 13);
     cout << "PRESS:";
-    position(MAIN_SCREEN + 5, 14);
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 14);
     cout << "A or <-- for left";
-    position(MAIN_SCREEN + 5, 15);
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 15);
     cout << "D or --> for right";
-    position(MAIN_SCREEN + 5, 16);
+
+    // Print border lines at the bottom
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 16);
     cout << "------------------";
-    position(MAIN_SCREEN + 5, 18);
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 18);
     cout << "-------------";
-    position(MAIN_SCREEN + 5, 20);
+    setCursorPosition(PLAY_AREA_WIDTH + 5, 20);
     cout << "-------------";
 }

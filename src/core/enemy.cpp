@@ -3,56 +3,124 @@
 #include "board.h"
 #include <iostream>
 using namespace std;
-/**defining function
- *@brief function to give the x coordinate for generating the enemy car
- *@return void
+
+/**
+ * @brief Generates the x coordinate for generating the enemy car.
+ *
+ * This function generates a random x coordinate within a specified range
+ * for placing the enemy car on the game board.
+ *
+ * @param enemyIndex The index of the enemy car.
  */
-void Enemy::gen_Enemy(int enemy_number)
+void Enemy::genEnemy(int enemyIndex)
 {
     int s = rand();
-    enemyX[enemy_number] = 17 + s % (33); // setting random board.position on the main field
+    enemyXCoordinates[enemyIndex] = 17 + s % 33; // Set random x coordinate on the game board
 }
 
-/**defining function
- *@brief function to print the enemy car
- *@param flag[enemy_number] variable to check whether to print the next enemy car or not
- *@return void
+/**
+ * @brief Prints the enemy car on the game board.
+ *
+ * This function prints the enemy car on the game board at the specified coordinates.
+ *
+ * @param enemyIndex The index of the enemy car.
  */
-void Enemy::print_Enemy(int enemy_number)
+void Enemy::printEnemy(int enemyIndex)
 {
     Board board;
-    board.color(12);
-    // if the condition is fulfilled then print the enemy
-    if (flag[enemy_number] == 1)
+    board.setTextColor(12);
+
+    if (enemyGenerationFlags[enemyIndex] == 1)
     {
-        board.position(enemyX[enemy_number], enemyY[enemy_number]);
-        cout << block3 << "**" << block3;
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 1);
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex]);
+        cout << SHADE_DARK << "**" << SHADE_DARK;
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex] + 1);
         cout << " ** ";
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 2);
-        cout << block3 << "**" << block3;
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 3);
-        cout << " " << block2 << block2 << " ";
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex] + 2);
+        cout << SHADE_DARK << "**" << SHADE_DARK;
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex] + 3);
+        cout << " " << SHADE_MEDIUM << SHADE_MEDIUM << " ";
     }
 }
 
-/**defining function
- *@brief function to erase the printed enemy
- *@return void
+/**
+ * @brief Erases the printed enemy car from the game board.
+ *
+ * This function erases the printed enemy car from the game board at the specified coordinates.
+ *
+ * @param enemyIndex The index of the enemy car.
  */
-
-void Enemy::erase_Enemy(int enemy_number)
+void Enemy::eraseEnemy(int enemyIndex)
 {
     Board board;
-    if (flag[enemy_number] == true)
+    if (enemyGenerationFlags[enemyIndex] == true)
     {
-        board.position(enemyX[enemy_number], enemyY[enemy_number]);
-        cout << "    "; // x,1
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 1);
-        cout << "    "; // x,2
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 2);
-        cout << "    "; // x,3
-        board.position(enemyX[enemy_number], enemyY[enemy_number] + 3);
-        cout << "    "; // x,4
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex]);
+        cout << "    ";
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex] + 1);
+        cout << "    ";
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex] + 2);
+        cout << "    ";
+        board.setCursorPosition(enemyXCoordinates[enemyIndex], enemyYCoordinates[enemyIndex] + 3);
+        cout << "    ";
     }
+}
+/**
+ * @brief Handles the movement of enemies in the game.
+ *
+ * This function controls the downward movement of the enemies on the screen.
+ * It also manages the appearance of a second enemy when certain conditions are met.
+ *
+ * @param enemy Reference to the Enemy object representing the enemies.
+ * @param enemyIndex Index of the enemy to move.
+ * @param sleep Time in milliseconds to pause between movements, controlling the speed.
+ * @return void
+ */
+void Enemy::enemyMovement(Enemy &enemy, int enemyIndex, int sleep)
+{
+    // Display the enemies on the screen
+    enemy.printEnemy(enemyIndex);
+    enemy.printEnemy(enemyIndex + 1);
+
+    // Pause for a specified time to control the speed of enemy movement
+    Sleep(sleep);
+
+    // Erase the enemies from their current positions
+    enemy.eraseEnemy(enemyIndex);
+    enemy.eraseEnemy(enemyIndex + 1);
+
+    // Check if the second enemy should appear and set the enemyGenerationFlags accordingly
+    if (enemyYCoordinates[1] == 13 && enemyGenerationFlags[2] == 0)
+    {
+        enemyGenerationFlags[2] = 1; // Set enemyGenerationFlags to enable the second enemy
+    }
+
+    // Move the first enemy downwards if its enemyGenerationFlags is set
+    if (enemyGenerationFlags[enemyIndex] == 1)
+    {
+        enemyYCoordinates[enemyIndex] += 1;
+    }
+    // Move the second enemy downwards if its enemyGenerationFlags is set
+    if (enemyGenerationFlags[enemyIndex + 1] == 1)
+    {
+        enemyYCoordinates[enemyIndex + 1] += 1;
+    }
+}
+
+/**
+ * @brief Resets the position of the specified enemy and regenerates its coordinates.
+ *
+ * This function erases the specified enemy from its current position and sets
+ * a new position for the enemy by updating its coordinates. The enemy is then
+ * regenerated at the new position.
+ *
+ * @param enemyIndex The index of the enemy to reset.
+ */
+void Enemy::resetEnemy(int enemyIndex)
+{
+    Enemy enemy;
+
+    enemy.eraseEnemy(enemyIndex);      // Remove the enemy from the screen
+    enemyYCoordinates[enemyIndex] = 1; // Reset the enemy's Y-coordinate to the initial position
+    enemy.genEnemy(enemyIndex);        // Generate new coordinates for the enemy
 }
