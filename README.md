@@ -1,5 +1,5 @@
 <p align="center">
- <img src="./Car_race_game.webp" width="100" style="border-radius: 20px;" />
+ <img src="./images/Car_race_game.webp" width="200" style="border-radius: 20px;" />
 </p>
 <p align="center">
     <h1 align="center">CAR RACE GAME</h1>
@@ -18,27 +18,30 @@
 	<img src="https://img.shields.io/badge/C-A8B9CC.svg?style=flat&logo=C&logoColor=black" alt="C">
 </p>
 <hr>
-
-## Quick Links
-
-> - [ Overview](#-overview)
-> - [ Features](#-features)
-> - [ Repository Structure](#-repository-structure)
-> - [ Modules](#-modules)
-> - [ Getting Started](#-getting-started)
->   - [ Installation](#-installation)
->   - [ Running 2nd-sem-Final-Project](#-running-2nd-sem-Final-Project)
->   - [ Tests](#-tests)
-> - [ Project Roadmap](#-project-roadmap)
-> - [ Contributing](#-contributing)
-> - [ License](#-license)
-> - [ Acknowledgments](#-acknowledgments)
+The Car Race Game is an engaging console-based game where players navigate a car along a road while avoiding collisions with oncoming vehicles. The game features multiple modes, each with varying difficulty levels, and keeps track of the player's score and elapsed time. The game interface includes detailed instructions, a dynamic leaderboard showcasing the top scores, and customizable settings for a personalized gaming experience.
 
 ---
 
-## Overview
+## Table of Contents
 
-The Car Race Game is an engaging console-based game where players navigate a car along a road while avoiding collisions with oncoming vehicles. The game features multiple modes, each with varying difficulty levels, and keeps track of the player's score and elapsed time. The game interface includes detailed instructions, a dynamic leaderboard showcasing the top scores, and customizable settings for a personalized gaming experience.
+- [Features](#-features)
+- [Repository Structure](#-repository-structure)
+- [Modules](#-modules)
+  - [root](#root)
+  - [src](#src)
+  - [src/utils](#srcutils)
+  - [src/core](#srccore)
+- [Getting Started](#-getting-started)
+  - [Requirements](#requirements)
+  - [Installation](#-installation)
+  - [Running the Game](#-running-the-game)
+- [How to Use the Game](#-how-to-use-the-game)
+- [Dependencies](#-dependencies)
+- [Demo](#-demo)
+- [Contributing](#-contributing)
+  - [Contributing Guidelines](#contributing-guidelines)
+- [Contact](#-contact)
+- [License](#-license)
 
 ---
 
@@ -57,7 +60,7 @@ The Car Race Game is an engaging console-based game where players navigate a car
 ## Repository Structure
 
 ```sh
-└── 2nd-sem-Final-Project/
+└── Car-Race-Game/
     ├── PlayerList.csv
     ├── README.md
     ├── TopThree.csv
@@ -165,6 +168,8 @@ cd Car-Race-Game
 g++  -I src -I src/core -I src/utils src/main.cpp src/core/*.cpp src/utils/*.cpp src/global.cpp -o car_race_game.exe
 ```
 
+---
+
 ### Running 2nd-sem-Final-Project
 
 Use the following command to run 2nd-sem-Final-Project:
@@ -227,6 +232,27 @@ The Car Race Game relies on the following header files:
 - **`vector`**: Provides dynamic array functionality for managing collections of data.
 - **`string`**: Supports string manipulation and operations.
 
+---
+
+## Demo
+
+1. **NameEntryMenu**
+   ![NameEntryMenu](./images/NameEntryMenu.png)
+2. **DisplayMenu**
+   ![DisplayMenu](./images/DisplayMenu.png)
+3. **LevelSelection**
+   ![LevelSelection](./images/LevelSelection.png)
+4. **GamePage**
+   ![GamePage](./images/GamePage.png)
+5. **GameOver**
+   ![GameOver](./images/GameOver.png)
+6. **DisplayInstructions.png**
+   ![DisplayInstructions.png](./images/DisplayInstructions.png)
+7. **Leaderboard**
+   ![Leaderboard](./images/Leaderboard.png)
+
+---
+
 ## Contributing
 
 Contributions are welcome! Here are several ways you can contribute:
@@ -241,7 +267,7 @@ Contributions are welcome! Here are several ways you can contribute:
 1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a Git client.
    ```sh
-   git clone https://github.com/Eemayas/2nd-sem-Final-Project
+   git clone https://github.com/Eemayas/Car-Race-Game
    ```
 3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
    ```sh
@@ -258,7 +284,7 @@ Contributions are welcome! Here are several ways you can contribute:
    ```
 7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
 
-Once your PR is reviewed and approved, it will be merged into the main branch.
+Once your PR is reviewed and approved, it will be merged     into the main branch.
 
 </details>
 
