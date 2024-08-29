@@ -261,8 +261,7 @@ Contributions are welcome! Here are several ways you can contribute:
 - **[Join the Discussions](https://github.com/Eemayas/2nd-sem-Final-Project/discussions)**: Share your insights, provide feedback, or ask questions.
 - **[Report Issues](https://github.com/Eemayas/2nd-sem-Final-Project/issues)**: Submit bugs found or log feature requests for 2nd-sem-final-project.
 
-<details closed>
-    <summary>Contributing Guidelines</summary>
+### Contributing Guidelines
 
 1. **Fork the Repository**: Start by forking the project repository to your GitHub account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a Git client.
@@ -284,9 +283,7 @@ Contributions are welcome! Here are several ways you can contribute:
    ```
 7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
 
-Once your PR is reviewed and approved, it will be merged     into the main branch.
-
-</details>
+Once your PR is reviewed and approved, it will be merged into the main branch.
 
 ---
 
