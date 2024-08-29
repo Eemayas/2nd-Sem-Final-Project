@@ -200,20 +200,20 @@ void Screen::gameOver()
     // Display score and time played
     gameOverText = "SCORE ==> ";
     board.setCursorPosition(board.calculateCenterOffset(gameOverText), 12);
-    cout << gameOverText << currentScore << endl;
+    cout << gameOverText << testScore << endl;
 
     gameOverText = "PLAYED TIME ==> ";
     board.setCursorPosition(board.calculateCenterOffset(gameOverText), 14);
     cout << gameOverText << timeDifference << " sec" << endl;
 
     // Prompt user to continue
-    gameOverText = "PRESS ANY KEY AND ENTER TO CONTINUE";
+    gameOverText = "PRESS ENTER TO CONTINUE";
     board.setCursorPosition(board.calculateCenterOffset(gameOverText), 17);
     cout << gameOverText;
 
-    char dummyChar;
-    cin >> dummyChar; // Wait for user input
-    fflush(stdin);    // Clear input buffer
+    std::cin.get();
+    std::cin.get(); // Wait for user input
+    fflush(stdin);  // Clear input buffer
 }
 
 /**

@@ -6,8 +6,6 @@
 class GameLogic
 {
 public:
-    int testScore;              ///< The score achieved in the current game session.
-    int highest[3] = {0, 0, 0}; ///< Array to store the top 3 highest scores, initialized to 0.
     /**
      * @brief Updates and displays the current score on the main screen.
      *

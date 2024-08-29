@@ -179,9 +179,9 @@ void GameLogic ::play(int initialSpeed, int scoreIncrement, int speedFactor)
             fout << currentScore << std::endl; // Save the score
             fout.close();                      // Close the file
 
-            screen.gameOver();                      // Display the game over screen
             leaderboardManager.updateLeaderboard(); // Update the leaderboard
             currentScore = 0;                       // Reset the score
+            screen.gameOver();                      // Display the game over screen
             break;                                  // Exit the game loop
         }
     }

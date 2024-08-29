@@ -3,6 +3,17 @@
 #include <iostream>
 #include <sstream>
 
+void checkAndCreateFile(const std::string &fileName)
+{
+    std::ifstream file(fileName);
+
+    if (!file.is_open())
+    {
+        // File doesn't exist, so create it
+        std::ofstream newFile(fileName);
+    }
+}
+
 /**
  * @brief Updates the leaderboard by recording the highest scores and their corresponding details.
  *
@@ -23,10 +34,14 @@ void LeaderboardManager::updateLeaderboard()
     std::string newTime = std::to_string(timeDifference);
     int newScore = testScore;
 
-    std::ifstream file(fileName, std::ios::in);
-    if (!file.is_open())
+    // Check if the leaderboard file exists, and create it if it doesn't
+    checkAndCreateFile(fileName);
+
+    // Open the leaderboard file for reading
+    std::ifstream leaderboardFile(fileName, std::ios::in);
+    if (!leaderboardFile.is_open())
     {
-        std::cerr << "Error opening file for reading." << std::endl;
+        std::cerr << "Error opening leaderboard file for reading." << std::endl;
         return;
     }
 
@@ -40,36 +55,47 @@ void LeaderboardManager::updateLeaderboard()
 
     LeaderboardEntry leaderboard[maxEntries];
     std::string line;
-    int index = 0;
-    while (index < maxEntries && std::getline(file, line))
+    // Read existing leaderboard data
+    int entryIndex = 0;
+    while (entryIndex < maxEntries && std::getline(leaderboardFile, line))
     {
         std::stringstream ss(line);
-        std::getline(ss, leaderboard[index].name, ',');
-        std::getline(ss, line, ',');
-        ss.clear();
-        ss.str(line);
-        ss >> leaderboard[index].score;
-        std::getline(ss, leaderboard[index].time);
-        ++index;
-    }
-    file.close();
+        std::getline(ss, leaderboard[entryIndex].name, ',');
 
-    // Insert new score into the leaderboard
-    index = 0;
-    while (index < maxEntries && leaderboard[index].score >= newScore)
-    {
-        ++index;
-    }
+        // Convert score from string to integer
+        std::string scoreStr;
+        std::getline(ss, scoreStr, ',');
+        leaderboard[entryIndex].score = std::stoi(scoreStr);
 
-    if (index < maxEntries)
+        std::getline(ss, leaderboard[entryIndex].time);
+        ++entryIndex;
+    }
+    leaderboardFile.close();
+
+    // Insert new score into the leaderboard if it qualifies
+    bool inserted = false;
+    for (int i = 0; i < maxEntries; ++i)
     {
-        for (int i = maxEntries - 1; i > index; --i)
+        if (newScore > leaderboard[i].score)
         {
-            leaderboard[i] = leaderboard[i - 1];
+            // Shift lower scores down
+            for (int j = maxEntries - 1; j > i; --j)
+            {
+                leaderboard[j] = leaderboard[j - 1];
+            }
+            // Insert new score
+            leaderboard[i].score = newScore;
+            leaderboard[i].name = newName;
+            leaderboard[i].time = newTime;
+            inserted = true;
+            break;
         }
-        leaderboard[index].score = newScore;
-        leaderboard[index].name = newName;
-        leaderboard[index].time = newTime;
+    }
+
+    // If new score is not high enough to enter the leaderboard, return
+    if (!inserted)
+    {
+        return;
     }
 
     // Write updated leaderboard back to file
@@ -132,9 +158,9 @@ void LeaderboardManager::displayLeaderboard()
     std::cout << "S.N.";
     board.setCursorPosition(2 * columnWidth, headerRow + 4);
     std::cout << "NAME";
-    board.setCursorPosition(3 * columnWidth, headerRow + 4);
-    std::cout << "SCORE";
     board.setCursorPosition(4 * columnWidth, headerRow + 4);
+    std::cout << "SCORE";
+    board.setCursorPosition(5 * columnWidth, headerRow + 4);
     std::cout << "TIME";
 
     // Read and display the leaderboard entries
@@ -158,22 +184,29 @@ void LeaderboardManager::displayLeaderboard()
         ++entryIndex;
     }
     file.close();
-
-    // Print the leaderboard entries
-    for (int i = 0; i < numberOfEntries; ++i)
+    if (entries[1].name == "")
     {
-        int rowOffset = headerRow + 5 + (3 * i);
-        board.setCursorPosition(columnWidth, rowOffset);
-        std::cout << i + 1;
-        board.setCursorPosition(2 * columnWidth, rowOffset);
-        std::cout << entries[i].name;
-        board.setCursorPosition(3 * columnWidth, rowOffset);
-        std::cout << entries[i].score;
-        board.setCursorPosition(4 * columnWidth, rowOffset);
-        std::cout << entries[i].time << " sec.";
+        board.setCursorPosition(board.calculateCenterOffset("No Data to Display"), headerRow + 8);
+        std::cout << "No Data to Display";
     }
-
-    // Wait for user input before closing
-    std::cin.get();
-    std::cin.get();
+    else
+    {
+        // Print the leaderboard entries
+        for (int i = 0; i < numberOfEntries; ++i)
+        {
+            if (entries[i].name == "")
+            {
+                break;
+            }
+            int rowOffset = headerRow + 5 + (3 * i);
+            board.setCursorPosition(columnWidth, rowOffset);
+            std::cout << i + 1;
+            board.setCursorPosition(2 * columnWidth, rowOffset);
+            std::cout << entries[i].name;
+            board.setCursorPosition(4 * columnWidth, rowOffset);
+            std::cout << entries[i].score;
+            board.setCursorPosition(5 * columnWidth, rowOffset);
+            std::cout << entries[i].time << " sec.";
+        }
+    }
 }

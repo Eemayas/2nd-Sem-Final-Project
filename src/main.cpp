@@ -69,6 +69,8 @@ int main()
             // executing if option is ‘3’
         case 3:
             leaderboardManager.displayLeaderboard(); // calling the function ‘leaderboard’’ from ’parent’ class
+            std::cin.get();
+            std::cin.get();
             break;
 
             // executing if option is ‘4’
